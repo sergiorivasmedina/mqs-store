@@ -1,6 +1,6 @@
 const brands = require('../apiServices/brands/routes');
 const components = require('../apiServices/components/routes');
-const components_details = require('../apiServices/component_details/routes');
+const components_details = require('../apiServices/componentDetails/routes');
 
 var express = require('express');
 var router = express.Router();

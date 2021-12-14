@@ -2,7 +2,7 @@ const express = require("express")
 const app = express()
 
 // Brand Model
-const Brand = require('../brand')
+const Brand = require('../brand.model')
 
 app.post('/brand', async (req, res) => {
     const { description, status } = req.body

@@ -1,4 +1,4 @@
-const findById = require('./handlers/findById');
+const findById = require('./handlers/findByIdBrand');
 const createComponent = require('./handlers/create');
 const updateComponent = require('./handlers/update');
 

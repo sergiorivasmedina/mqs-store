@@ -1,7 +1,7 @@
 const express = require("express")
 const app = express()
 
-const Brand = require('../brand')
+const Brand = require('../brand.model')
 
 app.put('/brand/:id', async (req, res) => {
     const { description, status } = req.body
