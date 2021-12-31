@@ -6,6 +6,7 @@ import materialRoutes from './views/material-kit/MaterialRoutes'
 
 // MQS
 import brandRoutes from './views/brand/BrandRoutes'
+import detailsRoutes from './views/details/Details'
 
 const redirectRoute = [
     {
@@ -28,6 +29,7 @@ const routes = [
     ...redirectRoute,
     ...errorRoute,
     ...brandRoutes,
+    ...detailsRoutes,
 ]
 
 export default routes

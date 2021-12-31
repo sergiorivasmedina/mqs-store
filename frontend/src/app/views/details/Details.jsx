@@ -1,9 +1,8 @@
 import React, { Fragment } from 'react'
 import { Grid } from '@mui/material'
 import { styled } from '@mui/system'
-import TopSellingTable from './shared/TopSellingTable'
-
-import BrandStatCards from './shared/BrandStatCards'
+import DetailsTable from './shared/DetailsTable'
+import { useLocation } from "react-router-dom";
 
 const ContentBox = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -12,14 +11,16 @@ const ContentBox = styled('div')(({ theme }) => ({
     },
 }))
 
-const Brands = () => {
+function Details() {
+    const { state } = useLocation();
+    console.log(state);
 
     return (
         <Fragment>
             <ContentBox className="analytics">
                 <Grid container spacing={3}>
                     <Grid item lg={12} md={8} sm={12} xs={512}>
-                        <BrandStatCards />
+                        <DetailsTable />
                     </Grid>
                 </Grid>
             </ContentBox>
@@ -27,4 +28,4 @@ const Brands = () => {
     )
 }
 
-export default Brands
+export default Details

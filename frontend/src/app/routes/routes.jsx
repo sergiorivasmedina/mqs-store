@@ -8,6 +8,7 @@ import MatxLayout from '../components/MatxLayout/MatxLayout'
 
 // MQS
 import brandRoutes from "app/views/brand/BrandRoutes";
+import detailsRoutes from "app/views/details/DetailsRoutes";
 
 export const AllPages = () => {
   return [
@@ -23,6 +24,7 @@ export const AllPages = () => {
         ...chartsRoute,
         ...materialRoutes,
         ...brandRoutes,
+        ...detailsRoutes,
       ],
     },
     ...sessionRoutes,

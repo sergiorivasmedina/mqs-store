@@ -1,8 +1,9 @@
 import React from 'react'
-import { Avatar, Grid, Card, Icon, IconButton, Tooltip } from '@mui/material'
+import { Grid, Card, Icon, IconButton, Tooltip } from '@mui/material'
 import { Box, styled } from '@mui/system'
 import { Small } from 'app/components/Typography'
 import Button from '@mui/material/Button';
+import { useNavigate } from 'react-router-dom'
 
 const StyledCard = styled(Card)(({ theme }) => ({
     display: 'flex',
@@ -52,11 +53,12 @@ const IMG = styled('img')(() => ({
     borderRadius: '10%'
 }))
 
-function clickMe() {
-    alert("You clicked me!");
-}
-
 const BransStatCards = () => {
+    let navigate = useNavigate()
+
+    function clickMe() {
+        navigate('/details', {state: 'Sergio'})
+    }
     return (
         <Grid container spacing={3} sx={{ mb: '24px' }}>
             <Grid item xs={12} md={6}>
