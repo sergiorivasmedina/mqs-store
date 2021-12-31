@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react'
 import { Grid } from '@mui/material'
 import { styled } from '@mui/system'
-import TopSellingTable from './shared/TopSellingTable'
 
 import BrandStatCards from './shared/BrandStatCards'
 

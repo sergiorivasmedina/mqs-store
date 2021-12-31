@@ -173,10 +173,10 @@ const Layout1Topbar = () => {
                                 <Span> Profile </Span>
                             </Link>
                         </StyledItem>
-                        <StyledItem>
+                        {/* <StyledItem>
                             <Icon> settings </Icon>
                             <Span> Settings </Span>
-                        </StyledItem>
+                        </StyledItem> */}
                         <StyledItem onClick={logout}>
                             <Icon> power_settings_new </Icon>
                             <Span> Logout </Span>
