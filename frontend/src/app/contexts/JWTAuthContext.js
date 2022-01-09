@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useReducer } from 'react'
 import jwtDecode from 'jwt-decode'
-import axios from 'axios.js'
+import axios from '../../axios'
 import { MatxLoading } from 'app/components'
 
 const initialState = {
@@ -84,10 +84,12 @@ export const AuthProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState)
 
     const login = async (email, password) => {
-        const response = await axios.post('/api/auth/login', {
+        await new Promise((resolve) => setTimeout(resolve, 200))
+        const response = await axios.post('/auth/v1/login', {
             email,
             password,
         })
+
         const { accessToken, user } = response.data
 
         setSession(accessToken)
@@ -98,6 +100,7 @@ export const AuthProvider = ({ children }) => {
                 user,
             },
         })
+        
     }
 
     const register = async (email, username, password) => {
@@ -130,6 +133,7 @@ export const AuthProvider = ({ children }) => {
                 const accessToken = window.localStorage.getItem('accessToken')
 
                 if (accessToken && isValidToken(accessToken)) {
+                    console.log('Entró al condicional de accestoken')
                     setSession(accessToken)
                     const response = await axios.get('/api/auth/profile')
                     const { user } = response.data
