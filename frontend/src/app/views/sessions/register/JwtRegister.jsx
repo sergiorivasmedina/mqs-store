@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { Box, styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import { Span } from 'app/components/Typography'
-import { Card, Checkbox, FormControlLabel, Grid, Button } from '@mui/material'
+import { Card, Grid, Button } from '@mui/material'
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
 
 const FlexBox = styled(Box)(() => ({
@@ -49,14 +49,14 @@ const JwtRegister = () => {
 
     const handleFormSubmit = (event) => {
         try {
-            register(state.email, state.username, state.password)
+            register(state.name, state.email, state.ruc, state.password)
             navigate('/')
         } catch (e) {
             console.log(e)
         }
     }
 
-    let { username, email, password, agreement } = state
+    let { name, email, password, ruc } = state
 
     return (
         <JWTRegister>
@@ -77,11 +77,11 @@ const JwtRegister = () => {
                                     sx={{ mb: 3, width: '100%' }}
                                     variant="outlined"
                                     size="small"
-                                    label="Username"
+                                    label="Nombre y apellido*"
                                     onChange={handleChange}
-                                    type="text"
-                                    name="username"
-                                    value={username || ''}
+                                    type="name"
+                                    name="name"
+                                    value={name || ''}
                                     validators={['required']}
                                     errorMessages={['this field is required']}
                                 />
@@ -89,7 +89,7 @@ const JwtRegister = () => {
                                     sx={{ mb: 3, width: '100%' }}
                                     variant="outlined"
                                     size="small"
-                                    label="Email"
+                                    label="Correo electrónico*"
                                     onChange={handleChange}
                                     type="email"
                                     name="email"
@@ -102,7 +102,7 @@ const JwtRegister = () => {
                                 />
                                 <TextValidator
                                     sx={{ mb: '16px', width: '100%' }}
-                                    label="Password"
+                                    label="Contraseña*"
                                     variant="outlined"
                                     size="small"
                                     onChange={handleChange}
@@ -112,24 +112,15 @@ const JwtRegister = () => {
                                     validators={['required']}
                                     errorMessages={['this field is required']}
                                 />
-                                <FormControlLabel
-                                    sx={{ mb: '16px' }}
-                                    name="agreement"
-                                    onChange={(e) =>
-                                        handleChange({
-                                            target: {
-                                                name: 'agreement',
-                                                value: e.target.checked,
-                                            },
-                                        })
-                                    }
-                                    control={
-                                        <Checkbox
-                                            size="small"
-                                            checked={agreement || false}
-                                        />
-                                    }
-                                    label="I have read and agree to the terms of service."
+                                <TextValidator
+                                    sx={{ mb: 3, width: '100%' }}
+                                    variant="outlined"
+                                    size="small"
+                                    label="RUC"
+                                    onChange={handleChange}
+                                    type="text"
+                                    name="ruc"
+                                    value={ruc || ''}
                                 />
                                 <FlexBox>
                                     <Button
@@ -138,14 +129,14 @@ const JwtRegister = () => {
                                         variant="contained"
                                         sx={{ textTransform: 'capitalize' }}
                                     >
-                                        Sign up
+                                        Registrar
                                     </Button>
-                                    <Span sx={{ mr: 1, ml: '20px' }}>or</Span>
+                                    <Span sx={{ mr: 1, ml: '20px' }}>o</Span>
                                     <Button
                                         sx={{ textTransform: 'capitalize' }}
                                         onClick={() => navigate("/session/signin")}
                                     >
-                                        Sign in
+                                        Ingresar
                                     </Button>
                                 </FlexBox>
                             </ValidatorForm>

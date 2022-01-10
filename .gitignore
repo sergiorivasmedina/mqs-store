@@ -1,2 +1,4 @@
 # Carpeta donde se almacena la data de la BD
 mongo_data/
+
+*.pem

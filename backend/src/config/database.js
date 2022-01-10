@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const URI = 'mongodb://sergio.rivas:pru3ba$@localhost:27017/mqs?authSource=admin';
+const URI = process.env.MONGO_DB_URI;
 
 mongoose.connect(URI)
   .then(db => console.log('MongoDB is connected'))
