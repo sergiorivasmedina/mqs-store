@@ -88,14 +88,14 @@ const ForgotPassword = () => {
                                         color="primary"
                                         type="submit"
                                     >
-                                        Reset Password
+                                        Restaurar contraseña
                                     </Button>
-                                    <Span sx={{ mr: 1, ml: '16px' }}>or</Span>
+                                    <Span sx={{ mr: 1, ml: '16px' }}>o</Span>
                                     <Button
                                         sx={{ textTransform: 'capitalize' }}
                                         onClick={() => navigate("/session/signin")}
                                     >
-                                        Sign in
+                                        Iniciar Sesión
                                     </Button>
                                 </FlexBox>
                             </ValidatorForm>

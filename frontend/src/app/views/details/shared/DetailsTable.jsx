@@ -3,6 +3,8 @@ import { Paragraph } from 'app/components/Typography'
 import { Box, styled } from '@mui/system'
 import {
     Card,
+    FormControl,
+    InputLabel,
     Table,
     TableHead,
     TableRow,
@@ -19,7 +21,7 @@ const CardHeader = styled('div')(() => ({
     marginBottom: '12px',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'normal',
 }))
 
 const Title = styled('span')(() => ({
@@ -50,17 +52,38 @@ const TopSellingTable = () => {
 
     return (
         <Card elevation={3} sx={{ pt: '20px', mb: 3 }}>
+            
+            <CardHeader>
+                <FormControl sx={{ m: 1, minWidth: 200 }}>
+                    <InputLabel id="select-helper-label-component">Filtrar por componente</InputLabel>
+                    <Select
+                        labelId="select-helper-label-component"
+                        id="select-helper"
+                        label="Age"
+                    >
+                        <MenuItem value="">
+                            <em>Mostrar Todo</em>
+                        </MenuItem>
+                        <MenuItem value="motor">Motor</MenuItem>
+                        <MenuItem value="transmision">Partes Eléctricas</MenuItem>
+                        <MenuItem value="electric_sistem">Suspensión</MenuItem>
+                        <MenuItem value="brake_sistem">Body Parts</MenuItem>
+                        <MenuItem value="chasis">Dirección</MenuItem>
+                        <MenuItem value="embrague">Embrague</MenuItem>
+                        <MenuItem value="embrague">Filtros</MenuItem>
+                        <MenuItem value="embrague">Transmisión</MenuItem>
+                        <MenuItem value="embrague">Válvulas Neumáticas</MenuItem>
+                        <MenuItem value="embrague">Inyección</MenuItem>
+                        <MenuItem value="embrague">Sistema de Gas GNV</MenuItem>
+                        <MenuItem value="embrague">Tren de Fuerza</MenuItem>
+                        <MenuItem value="embrague">Lubricantes</MenuItem>
+                    </Select>
+                </FormControl>
+            </CardHeader>
             <CardHeader>
                 <Title>Catálogo de productos</Title>
-                <Select size="small" defaultValue="motor">
-                    <MenuItem value="motor">Motor</MenuItem>
-                    <MenuItem value="transmision">Transmisión</MenuItem>
-                    <MenuItem value="electric_sistem">Sistema Eléctrico</MenuItem>
-                    <MenuItem value="brake_sistem">Sistema Frenos</MenuItem>
-                    <MenuItem value="chasis">Chasis</MenuItem>
-                    <MenuItem value="embrague">Embrague</MenuItem>
-                </Select>
             </CardHeader>
+
             <Box overflow="auto">
                 <ProductTable>
                     <TableHead>

@@ -100,7 +100,7 @@ const JwtLogin = () => {
                                     sx={{ mb: 3, width: '100%' }}
                                     variant="outlined"
                                     size="small"
-                                    label="Email"
+                                    label="Correo"
                                     onChange={handleChange}
                                     type="email"
                                     name="email"
@@ -113,7 +113,7 @@ const JwtLogin = () => {
                                 />
                                 <TextValidator
                                     sx={{ mb: '12px', width: '100%' }}
-                                    label="Password"
+                                    label="Contraseña"
                                     variant="outlined"
                                     size="small"
                                     onChange={handleChange}
@@ -143,7 +143,7 @@ const JwtLogin = () => {
                                             checked={userInfo.agreement || true}
                                         />
                                     }
-                                    label="Remeber me"
+                                    label="Recuérdame"
                                 />
 
                                 {message && (
@@ -160,7 +160,7 @@ const JwtLogin = () => {
                                             disabled={loading}
                                             type="submit"
                                         >
-                                            Sign in
+                                            Iniciar Sesión
                                         </Button>
                                         {loading && (
                                             <StyledProgress
@@ -169,14 +169,14 @@ const JwtLogin = () => {
                                             />
                                         )}
                                     </Box>
-                                    <Span sx={{ mr: 1, ml: '20px' }}>or</Span>
+                                    <Span sx={{ mr: 1, ml: '20px' }}>o</Span>
                                     <Button
                                         sx={{ textTransform: 'capitalize' }}
                                         onClick={() =>
                                             navigate('/session/signup')
                                         }
                                     >
-                                        Sign up
+                                        Registrarte
                                     </Button>
                                 </FlexBox>
                                 <Button
@@ -185,7 +185,7 @@ const JwtLogin = () => {
                                         navigate('/session/forgot-password')
                                     }
                                 >
-                                    Forgot password?
+                                    ¿Olvidaste tu contraseña?
                                 </Button>
                             </ValidatorForm>
                         </ContentBox>

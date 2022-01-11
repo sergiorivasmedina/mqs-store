@@ -1,8 +1,34 @@
 export const navigations = [
     {
-        name: 'Marcas',
+        name: 'Catálogo',
         path: '/brand',
         icon: 'dashboard',
+    },
+    {
+        name: 'Administrar',
+        icon: 'security',
+        children: [
+            {
+                name: 'Marcas',
+                iconText: 'SI',
+                path: '/marcas',
+            },
+            {
+                name: 'Componentes',
+                iconText: 'SU',
+                path: '/componentes',
+            },
+            {
+                name: 'Items',
+                iconText: 'FP',
+                path: '/items',
+            },
+            {
+                name: 'Usuarios',
+                iconText: '404',
+                path: '/usuarios',
+            },
+        ],
     },
     // {
     //     name: 'Dashboard',
