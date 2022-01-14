@@ -18,7 +18,7 @@ const App = () => {
                     <AuthProvider>
                         {all_pages}
                         <Routes>
-                            <Route path='/' element={<Navigate to="/brand" />} />
+                            <Route path='/' element={<Navigate to="/product-catalog" />} />
                         </Routes>
                     </AuthProvider>
                 </MatxTheme>

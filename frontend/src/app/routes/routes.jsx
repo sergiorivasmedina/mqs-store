@@ -7,8 +7,9 @@ import sessionRoutes from "app/views/sessions/SessionRoutes";
 import MatxLayout from '../components/MatxLayout/MatxLayout'
 
 // MQS
-import brandRoutes from "app/views/brand/BrandRoutes";
+import productCatalogRoutes from "app/views/product-catalog/ProductCatalogRoutes";
 import detailsRoutes from "app/views/details/DetailsRoutes";
+import brandsRoutes from "app/views/brands/BrandsRoutes";
 
 export const AllPages = () => {
   return [
@@ -23,8 +24,9 @@ export const AllPages = () => {
         ...dashboardRoutes,
         ...chartsRoute,
         ...materialRoutes,
-        ...brandRoutes,
+        ...productCatalogRoutes,
         ...detailsRoutes,
+        ...brandsRoutes,
       ],
     },
     ...sessionRoutes,
