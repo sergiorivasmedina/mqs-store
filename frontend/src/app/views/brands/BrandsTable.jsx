@@ -183,7 +183,7 @@ const SimpleTable = ({ brands, setBrands }) => {
                                     <Button onClick={handleClose} color="secondary">
                                         Cancelar
                                     </Button>
-                                    <Button onClick={() => handleUpdate(brand)} color="primary">
+                                    <Button onClick={handleUpdate} color="primary">
                                         Actualizar
                                     </Button>
                                 </DialogActions>
