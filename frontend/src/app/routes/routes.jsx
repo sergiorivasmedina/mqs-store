@@ -10,6 +10,7 @@ import MatxLayout from '../components/MatxLayout/MatxLayout'
 import productCatalogRoutes from "app/views/product-catalog/ProductCatalogRoutes";
 import detailsRoutes from "app/views/details/DetailsRoutes";
 import brandsRoutes from "app/views/brands/BrandsRoutes";
+import componetsRoutes from "app/views/brand-components/ComponentsRoutes";
 
 export const AllPages = () => {
   return [
@@ -27,6 +28,7 @@ export const AllPages = () => {
         ...productCatalogRoutes,
         ...detailsRoutes,
         ...brandsRoutes,
+        ...componetsRoutes,
       ],
     },
     ...sessionRoutes,

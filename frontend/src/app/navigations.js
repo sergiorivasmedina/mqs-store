@@ -14,8 +14,7 @@ export const navigations = [
             },
             {
                 name: 'Componentes',
-                iconText: 'SU',
-                path: '/componentes',
+                path: '/components',
             },
             {
                 name: 'Items',

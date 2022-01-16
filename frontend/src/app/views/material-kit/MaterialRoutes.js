@@ -18,11 +18,16 @@ const AppExpansionPanel = Loadable(lazy(() => import("./expansion-panel/AppExpan
 
 // MQS
 const BrandsView = Loadable(lazy(() => import("../brands/Brands")));
+const ComponentsView = Loadable(lazy(() => import("../brand-components/Components")));
 
 const materialRoutes = [
     {
         path: '/brands',
         element: <BrandsView />,
+    },
+    {
+        path: '/components',
+        element: <ComponentsView />,
     }
     ,{
         path: '/material/table',

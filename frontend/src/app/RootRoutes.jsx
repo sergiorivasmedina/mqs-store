@@ -8,6 +8,7 @@ import materialRoutes from './views/material-kit/MaterialRoutes'
 import productCatalogRoutes from './views/product-catalog/ProductCatalogRoutes'
 import detailsRoutes from './views/details/DetailsRoutes'
 import brandsRoutes from './views/brands/BrandsRoutes'
+import componentsRoutes from './views/brand-components/ComponentsRoutes'
 
 const redirectRoute = [
     {
@@ -32,6 +33,7 @@ const routes = [
     ...productCatalogRoutes,
     ...detailsRoutes,
     ...brandsRoutes,
+    ...componentsRoutes,
 ]
 
 export default routes

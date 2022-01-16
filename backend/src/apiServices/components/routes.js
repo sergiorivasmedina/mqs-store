@@ -1,4 +1,4 @@
-const findById = require('./handlers/findByIdBrand');
+const findAll = require('./handlers/findAll');
 const createComponent = require('./handlers/create');
 const updateComponent = require('./handlers/update');
 
@@ -7,7 +7,7 @@ var router = express.Router();
 
 const VERSION_1 = '/v1'
 
-router.use(VERSION_1, findById);
+router.use(VERSION_1, findAll);
 router.use(VERSION_1, createComponent)
 router.use(VERSION_1, updateComponent)
 
