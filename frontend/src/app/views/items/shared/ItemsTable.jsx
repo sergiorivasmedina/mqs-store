@@ -66,12 +66,13 @@ const SimpleTable = ({ items, setItems }) => {
     }
 
     function editItem(item) {
-        setitemName(item.description)
-        setState(item.status)
-        let currentState = item.status ? 'Activo' : 'Inactivo'
-        setStateName(currentState)
-        setCurrentItem(item)
-        setOpen(true)
+        // setitemName(item.description)
+        // setState(item.status)
+        // let currentState = item.status ? 'Activo' : 'Inactivo'
+        // setStateName(currentState)
+        // setCurrentItem(item)
+        // setOpen(true)
+        alert('Funcionalidad en contrucción')
     }
 
     function validateChange(item, newItem) {

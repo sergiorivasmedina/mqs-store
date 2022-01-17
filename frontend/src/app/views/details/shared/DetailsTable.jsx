@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Paragraph } from 'app/components/Typography'
 import { Box, styled } from '@mui/system'
 import {
@@ -14,6 +14,7 @@ import {
     MenuItem,
     Select,
 } from '@mui/material'
+import axios from '../../../../axios'
 
 const CardHeader = styled('div')(() => ({
     paddingLeft: '24px',
@@ -50,9 +51,42 @@ const ProductTable = styled(Table)(() => ({
 
 const TopSellingTable = () => {
 
+    const [components, setComponents] = useState([]);
+    const [selectedComponent, setSelectedComponent] = useState('');
+    const [productList, setProductList] = useState([]);
+
+    useEffect(() => {
+        // Get all components from backend
+        axios.get('/api/v1/components').then(res => {
+            setComponents(res.data);
+        })
+        getAllItemsFromBrand();
+    }, []);
+
+    function getAllItemsFromBrand() {
+        axios.get('/api/v1/component-details/brand/' + localStorage.getItem('brandSelected')).then(res => {
+            setProductList(res.data);
+        })
+    }
+
+    function handleComponentChange(event) {
+        let componentId = event.target.value;
+        setSelectedComponent(componentId)
+        console.info(`componentId: ${JSON.stringify(componentId)}`)
+        if (componentId) {
+            axios.get('/api/v1/component-details/brand/' + localStorage.getItem('brandSelected') + '/component/' + componentId).then(res => {
+                setProductList(res.data);
+            })
+        } else {
+            // Se lista todo lo de la marca
+            getAllItemsFromBrand();
+        }
+        
+    }
+
     return (
         <Card elevation={3} sx={{ pt: '20px', mb: 3 }}>
-            
+
             <CardHeader>
                 <FormControl sx={{ m: 1, minWidth: 200 }}>
                     <InputLabel id="select-helper-label-component">Filtrar por componente</InputLabel>
@@ -60,23 +94,19 @@ const TopSellingTable = () => {
                         labelId="select-helper-label-component"
                         id="select-helper"
                         label="Age"
+                        value={selectedComponent}
+                        onChange={handleComponentChange}
                     >
                         <MenuItem value="">
                             <em>Mostrar Todo</em>
                         </MenuItem>
-                        <MenuItem value="motor">Motor</MenuItem>
-                        <MenuItem value="transmision">Partes Eléctricas</MenuItem>
-                        <MenuItem value="electric_sistem">Suspensión</MenuItem>
-                        <MenuItem value="brake_sistem">Body Parts</MenuItem>
-                        <MenuItem value="chasis">Dirección</MenuItem>
-                        <MenuItem value="embrague">Embrague</MenuItem>
-                        <MenuItem value="embrague">Filtros</MenuItem>
-                        <MenuItem value="embrague">Transmisión</MenuItem>
-                        <MenuItem value="embrague">Válvulas Neumáticas</MenuItem>
-                        <MenuItem value="embrague">Inyección</MenuItem>
-                        <MenuItem value="embrague">Sistema de Gas GNV</MenuItem>
-                        <MenuItem value="embrague">Tren de Fuerza</MenuItem>
-                        <MenuItem value="embrague">Lubricantes</MenuItem>
+                        {components.map((component, index) => (
+                            <MenuItem
+                                key={index}
+                                value={component._id}>
+                                {component.description}
+                            </MenuItem>
+                        ))}
                     </Select>
                 </FormControl>
             </CardHeader>
@@ -89,13 +119,16 @@ const TopSellingTable = () => {
                     <TableHead>
                         <TableRow>
                             <TableCell sx={{ px: 3 }} colSpan={2}>
-                                N° Parte
-                            </TableCell>
-                            <TableCell sx={{ px: 0 }} colSpan={2}>
                                 Código
                             </TableCell>
                             <TableCell sx={{ px: 0 }} colSpan={2}>
                                 Descripción
+                            </TableCell>
+                            <TableCell sx={{ px: 0 }} colSpan={2}>
+                                Marca
+                            </TableCell>
+                            <TableCell sx={{ px: 0 }} colSpan={2}>
+                                Componente
                             </TableCell>
                             <TableCell sx={{ px: 0 }} colSpan={2}>
                                 Precio
@@ -109,22 +142,11 @@ const TopSellingTable = () => {
                         {productList.map((product, index) => (
                             <TableRow key={index} hover>
                                 <TableCell
-                                    colSpan={2}
-                                    align="left"
-                                    sx={{ px: 0, textTransform: 'capitalize' }}
-                                >
-                                    <Box display="flex" alignItems="center">
-                                        <Paragraph sx={{ m: 0, ml: 0 }}>
-                                            {product.partNumber}
-                                        </Paragraph>
-                                    </Box>
-                                </TableCell>
-                                <TableCell
                                     align="left"
                                     colSpan={2}
                                     sx={{ px: 0, textTransform: 'capitalize' }}
                                 >
-                                    {product.idDetail}
+                                    {product._id}
                                 </TableCell>
                                 <TableCell
                                     colSpan={2}
@@ -138,15 +160,33 @@ const TopSellingTable = () => {
                                     </Box>
                                 </TableCell>
                                 <TableCell
+                                    colSpan={2}
+                                    align="left"
+                                    sx={{ px: 0, textTransform: 'capitalize' }}
+                                >
+                                    <Box display="flex" alignItems="center">
+                                        <Paragraph sx={{ m: 0, ml: 0 }}>
+                                            {product.brand.description}
+                                        </Paragraph>
+                                    </Box>
+                                </TableCell>
+                                <TableCell
+                                    colSpan={2}
+                                    align="left"
+                                    sx={{ px: 0, textTransform: 'capitalize' }}
+                                >
+                                    <Box display="flex" alignItems="center">
+                                        <Paragraph sx={{ m: 0, ml: 0 }}>
+                                            {product.component.description}
+                                        </Paragraph>
+                                    </Box>
+                                </TableCell>
+                                <TableCell
                                     align="left"
                                     colSpan={2}
                                     sx={{ px: 0, textTransform: 'capitalize' }}
                                 >
-                                    $
-                                    {product.price > 999
-                                        ? (product.price / 1000).toFixed(1) +
-                                        'k'
-                                        : product.price}
+                                    S/ {product.price.toFixed(2)}
                                 </TableCell>
                                 <TableCell
                                     colSpan={2}
@@ -166,42 +206,42 @@ const TopSellingTable = () => {
     )
 }
 
-const productList = [
-    {
-        imgUrl: '/assets/images/products/headphone-2.jpg',
-        partNumber: '10100',
-        idDetail: '123456',
-        description: 'Pistón',
-        price: 100,
-    },
-    {
-        imgUrl: '/assets/images/products/headphone-3.jpg',
-        partNumber: '10100',
-        idDetail: '123456',
-        description: 'Pistón',
-        price: 100,
-    },
-    {
-        imgUrl: '/assets/images/products/iphone-2.jpg',
-        partNumber: '10100',
-        idDetail: '123456',
-        description: 'Pistón',
-        price: 100,
-    },
-    {
-        imgUrl: '/assets/images/products/iphone-1.jpg',
-        partNumber: '10100',
-        idDetail: '123456',
-        description: 'Pistón',
-        price: 100,
-    },
-    {
-        imgUrl: '/assets/images/products/headphone-3.jpg',
-        partNumber: '10100',
-        idDetail: '123456',
-        description: 'Pistón',
-        price: 100,
-    },
-]
+// const productList = [
+//     {
+//         imgUrl: '/assets/images/products/headphone-2.jpg',
+//         partNumber: '10100',
+//         idDetail: '123456',
+//         description: 'Pistón',
+//         price: 100,
+//     },
+//     {
+//         imgUrl: '/assets/images/products/headphone-3.jpg',
+//         partNumber: '10100',
+//         idDetail: '123456',
+//         description: 'Pistón',
+//         price: 100,
+//     },
+//     {
+//         imgUrl: '/assets/images/products/iphone-2.jpg',
+//         partNumber: '10100',
+//         idDetail: '123456',
+//         description: 'Pistón',
+//         price: 100,
+//     },
+//     {
+//         imgUrl: '/assets/images/products/iphone-1.jpg',
+//         partNumber: '10100',
+//         idDetail: '123456',
+//         description: 'Pistón',
+//         price: 100,
+//     },
+//     {
+//         imgUrl: '/assets/images/products/headphone-3.jpg',
+//         partNumber: '10100',
+//         idDetail: '123456',
+//         description: 'Pistón',
+//         price: 100,
+//     },
+// ]
 
 export default TopSellingTable
