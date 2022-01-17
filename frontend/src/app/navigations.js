@@ -18,7 +18,6 @@ export const navigations = [
             },
             {
                 name: 'Items',
-                iconText: 'FP',
                 path: '/items',
             },
             {

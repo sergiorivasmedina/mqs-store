@@ -11,6 +11,7 @@ import productCatalogRoutes from "app/views/product-catalog/ProductCatalogRoutes
 import detailsRoutes from "app/views/details/DetailsRoutes";
 import brandsRoutes from "app/views/brands/BrandsRoutes";
 import componetsRoutes from "app/views/brand-components/ComponentsRoutes";
+import itemsRoutes from "app/views/items/ItemsRoutes";
 
 export const AllPages = () => {
   return [
@@ -29,6 +30,7 @@ export const AllPages = () => {
         ...detailsRoutes,
         ...brandsRoutes,
         ...componetsRoutes,
+        ...itemsRoutes,
       ],
     },
     ...sessionRoutes,
