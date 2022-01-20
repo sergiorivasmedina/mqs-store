@@ -7,6 +7,7 @@ const findAll = require('./handlers/v1/findAll');
 
 // v2
 const updateComponentV2 = require('./handlers/v2/update');
+const createComponentV2 = require('./handlers/v2/create');
 
 var express = require('express');
 var router = express.Router();
@@ -21,5 +22,6 @@ router.use(VERSION_1, updateComponent);
 router.use(VERSION_1, findAll);
 
 router.use(VERSION_2, updateComponentV2);
+router.use(VERSION_2, createComponentV2);
 
 module.exports = router;
