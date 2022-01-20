@@ -7,7 +7,8 @@ const ComponentDetailSchema = new Schema({
     price: { type: Number, require: true },
     idComponent: {type: Schema.Types.ObjectId, require: true },
     idBrand: {type: Schema.Types.ObjectId, require: true },
-    status: {type: Number, require: true}
+    status: {type: Number, require: true},
+    photos: [{ type: String }]
 }, { versionKey: false })
 
 module.exports = mongoose.model('ComponentDetail', ComponentDetailSchema)

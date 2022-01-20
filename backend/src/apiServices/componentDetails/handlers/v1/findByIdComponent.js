@@ -1,9 +1,9 @@
 const express = require("express")
 const app = express()
 
-const ComponentDetail = require('../componentDetail.model')
-const Brand = require('../../brands/brand.model');
-const Component = require('../../components/component.model');
+const ComponentDetail = require('../../componentDetail.model')
+const Brand = require('../../../brands/brand.model');
+const Component = require('../../../components/component.model');
 
 app.get('/component-details/brand/:idBrand/component/:idComponent', async (req, res) => {
     const componentDetail = await ComponentDetail.find({ idBrand: req.params.idBrand, idComponent: req.params.idComponent, status: 1 })

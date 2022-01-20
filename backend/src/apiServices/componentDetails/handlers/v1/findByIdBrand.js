@@ -1,13 +1,13 @@
 const express = require("express")
 const app = express()
 
-const ComponentDetails = require('../componentDetail.model');
-const Brand = require('../../brands/brand.model');
-const Component = require('../../components/component.model');
+const ComponentDetail = require('../../componentDetail.model')
+const Brand = require('../../../brands/brand.model');
+const Component = require('../../../components/component.model');
 
-app.get('/component-details', async (_req, res) => {
-    const componentDetails = await ComponentDetails.find();
-    let componentDetailsResponse = await Promise.all(componentDetails.map(async (response) => {
+app.get('/component-details/brand/:idBrand', async (req, res) => {
+    const componentDetail = await ComponentDetail.find({ idBrand: req.params.idBrand, status: 1 })
+    let componentDetailResponse = await Promise.all(componentDetail.map(async (response) => {
         const brand = await Brand.findById(response.idBrand);
         const component = await Component.findById(response.idComponent);
         return {
@@ -20,8 +20,7 @@ app.get('/component-details', async (_req, res) => {
             component: component
         }
     }))
-    
-    res.json(componentDetailsResponse);
+    res.json(componentDetailResponse);
 })
 
 module.exports = app;
