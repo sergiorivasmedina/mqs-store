@@ -5,10 +5,15 @@ const { uploadS3 } = require('../../../../common-middleware');
 const ComponentDetail = require('../../componentDetail.model')
 
 function addImagesLinks(files, photos) {
-    files.forEach(element => {
-        let key = element.key;
-        photos.push(key);
-    });
+
+    if (Array.isArray(files) && files.length) {
+        files.forEach(element => {
+            let key = element.key;
+            photos.push(key);
+        });
+    } else {
+        photos.length = 0;
+    }
 }
 
 app.put('/component-detail/:idDetail', uploadS3.array("productPicture"), async (req, res) => {
