@@ -30,3 +30,16 @@ function getFileStream(fileKey) {
     return s3.getObject(downloadParams).createReadStream();
 }
 exports.getFileStream = getFileStream;
+
+// delete a S3 image
+function deleteFileStream(fileKey) {
+    const params = {
+        Key: fileKey,
+        Bucket: bucketName
+    }
+    s3.deleteObject(params, function (err, data) {
+        if (err) console.log(err, err.stack); // an error occurred
+        else console.log(data);           // successful response
+    });
+}
+exports.deleteFileStream = deleteFileStream;
