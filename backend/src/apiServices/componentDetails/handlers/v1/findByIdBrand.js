@@ -17,7 +17,8 @@ app.get('/component-details/brand/:idBrand', async (req, res) => {
             price: response.price,
             status: response.status,
             brand: brand,
-            component: component
+            component: component,
+            photos: response.photos
         }
     }))
     res.json(componentDetailResponse);

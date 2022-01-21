@@ -4,16 +4,21 @@ import { Box, styled } from '@mui/system'
 import {
     Card,
     FormControl,
+    Icon,
+    IconButton,
     InputLabel,
     Table,
     TableHead,
     TableRow,
     TableCell,
     TableBody,
-    Avatar,
     MenuItem,
     Select,
 } from '@mui/material'
+import SwipeableTextMobileStepper from './SwipeableTextMobileStepper'
+import Slide from '@mui/material/Slide'
+import Dialog from '@mui/material/Dialog'
+import DialogContent from '@mui/material/DialogContent'
 import axios from '../../../../axios'
 
 const CardHeader = styled('div')(() => ({
@@ -49,11 +54,23 @@ const ProductTable = styled(Table)(() => ({
     },
 }))
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />
+})
+
 const TopSellingTable = () => {
 
+    const endpointImages = 'http://localhost:8080/api/v1/images/';
+    const endpointImagesNotAvailable = 'http://localhost:3000/assets/images/mqs/image_not_available.png';
+    const [endpoint, setEndpoint] = useState(endpointImages);
+
+    const [open, setOpen] = useState(false)
     const [components, setComponents] = useState([]);
     const [selectedComponent, setSelectedComponent] = useState('');
     const [productList, setProductList] = useState([]);
+
+    const emptyProductImage = { photos: [], description: null, price: null, brand: { description: null }, component: { description: null } };
+    const [productImageSelected, setProductImageSelected] = useState(emptyProductImage);
 
     useEffect(() => {
         // Get all components from backend
@@ -81,7 +98,24 @@ const TopSellingTable = () => {
             // Se lista todo lo de la marca
             getAllItemsFromBrand();
         }
-        
+
+    }
+
+    function handlePhoto(product) {
+        let auxProduct = JSON.parse(JSON.stringify(product)) // copy object
+        if (product.photos.length === 0) {
+            auxProduct.photos.push('')
+            setEndpoint(endpointImagesNotAvailable);
+        } else {
+            setEndpoint(endpointImages);
+        }
+        setProductImageSelected(auxProduct);
+        setOpen(true);
+    }
+
+    function handleClose() {
+        setProductImageSelected(emptyProductImage);
+        setOpen(false);
     }
 
     return (
@@ -193,10 +227,29 @@ const TopSellingTable = () => {
                                     align="left"
                                     sx={{ px: 0, textTransform: 'capitalize' }}
                                 >
-                                    <Box display="flex" alignItems="center">
-                                        <Avatar src={product.imgUrl} />
-                                    </Box>
+                                    <IconButton onClick={() => handlePhoto(product)}>
+                                        <Icon color="primary">photo</Icon>
+                                    </IconButton>
                                 </TableCell>
+                                <Dialog
+                                    open={open}
+                                    TransitionComponent={Transition}
+                                    keepMounted
+                                    onClose={handleClose}
+                                    aria-labelledby="alert-dialog-slide-title"
+                                    aria-describedby="alert-dialog-slide-description"
+                                >
+                                    <DialogContent>
+                                        <SwipeableTextMobileStepper
+                                            endpoint={endpoint}
+                                            photos={productImageSelected.photos}
+                                            description={productImageSelected.description}
+                                            price={productImageSelected.price}
+                                            brandName={productImageSelected.brand.description}
+                                            componentName={productImageSelected.component.description}
+                                        />
+                                    </DialogContent>
+                                </Dialog>
                             </TableRow>
                         ))}
                     </TableBody>
@@ -205,43 +258,5 @@ const TopSellingTable = () => {
         </Card>
     )
 }
-
-// const productList = [
-//     {
-//         imgUrl: '/assets/images/products/headphone-2.jpg',
-//         partNumber: '10100',
-//         idDetail: '123456',
-//         description: 'Pistón',
-//         price: 100,
-//     },
-//     {
-//         imgUrl: '/assets/images/products/headphone-3.jpg',
-//         partNumber: '10100',
-//         idDetail: '123456',
-//         description: 'Pistón',
-//         price: 100,
-//     },
-//     {
-//         imgUrl: '/assets/images/products/iphone-2.jpg',
-//         partNumber: '10100',
-//         idDetail: '123456',
-//         description: 'Pistón',
-//         price: 100,
-//     },
-//     {
-//         imgUrl: '/assets/images/products/iphone-1.jpg',
-//         partNumber: '10100',
-//         idDetail: '123456',
-//         description: 'Pistón',
-//         price: 100,
-//     },
-//     {
-//         imgUrl: '/assets/images/products/headphone-3.jpg',
-//         partNumber: '10100',
-//         idDetail: '123456',
-//         description: 'Pistón',
-//         price: 100,
-//     },
-// ]
 
 export default TopSellingTable
