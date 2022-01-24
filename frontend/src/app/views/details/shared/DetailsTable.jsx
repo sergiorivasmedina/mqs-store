@@ -62,10 +62,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const TopSellingTable = () => {
 
-    const endpointImages = 'http://localhost:8080/api/v1/images/';
-    const endpointImagesNotAvailable = 'http://localhost:3000/assets/images/mqs/image_not_available.png';
-    // const endpointImages = 'http://3.82.209.241:8080/api/v1/images/';
-    // const endpointImagesNotAvailable = 'http://3.82.209.241:3000/assets/images/mqs/image_not_available.png';
+    // const endpointImages = 'http://localhost:8080/api/v1/images/';
+    // const endpointImagesNotAvailable = 'http://localhost:3000/assets/images/mqs/image_not_available.png';
+    const endpointImages = 'http://3.82.209.241:8080/api/v1/images/';
+    const endpointImagesNotAvailable = 'http://3.82.209.241:3000/assets/images/mqs/image_not_available.png';
     const [endpoint, setEndpoint] = useState(endpointImages);
 
     const [open, setOpen] = useState(false)
