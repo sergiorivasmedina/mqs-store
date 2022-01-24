@@ -205,9 +205,9 @@ export default function CreateItemDialog({ items, setItems }) {
                     />
                     <br></br>
                     <br></br>
-                    <StyledAutocompleteCombo getPath={'/api/v1/brands'} label={'Marca'} setInputValue={setInputBrandValue} />
+                    <StyledAutocompleteCombo getPath={'/api/v1/brands'} label={'Marca'} setInputFormValue={setInputBrandValue} />
                     <br></br>
-                    <StyledAutocompleteCombo getPath={'/api/v1/components'} label={'Componentes'} setInputValue={setInputComponentValue} />
+                    <StyledAutocompleteCombo getPath={'/api/v1/components'} label={'Componentes'} setInputFormValue={setInputComponentValue} />
                     <br></br>
                     <StyledFormControlLabel
                         control={

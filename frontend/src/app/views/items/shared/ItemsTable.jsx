@@ -86,13 +86,14 @@ const DivUploadImages = styled('div')(() => ({
 const SimpleTable = ({ items, setItems }) => {
 
     // Edit Dialog
+    const initialCurrentItem = { desciption: '' }
     const [open, setOpen] = useState(false)
     const [state, setState] = useState(true)
     const [stateName, setStateName] = useState('Activo')
     const [itemPartNumber, setItemPartNumber] = useState('')
     const [itemName, setItemName] = useState('')
     const [itemPrice, setItemPrice] = useState(0)
-    const [currentItem, setCurrentItem] = useState(null)
+    const [currentItem, setCurrentItem] = useState(initialCurrentItem)
     const [inputBrand, setInputBrand] = useState(null);
     const [inputComponent, setInputComponent] = useState(null);
     const [productPictures, setProductPictures] = useState([]);
@@ -111,6 +112,9 @@ const SimpleTable = ({ items, setItems }) => {
     const [brandSuggestions, setBrandSuggestions] = useState([]);
     const [componentSuggestions, setComponentSuggestions] = useState([]);
 
+    // delete item
+    const [openDeleteItem, setOpenDeleteItem] = useState(false);
+
     useEffect(() => {
 
         // Get all brands from backend
@@ -128,7 +132,7 @@ const SimpleTable = ({ items, setItems }) => {
         setItemName('')
         setItemPartNumber('')
         setItemPrice(0)
-        setCurrentItem(null)
+        setCurrentItem(initialCurrentItem)
         setProductPictures([])
         setNewPicturesList([])
         setDeletedPicturesList([])
@@ -157,10 +161,6 @@ const SimpleTable = ({ items, setItems }) => {
         setProductPictures(list);
     }
 
-    function deleteItem(item) {
-        alert('Funcionalidad de eliminar en contrucción')
-    }
-
     function handlePhoto(product) {
         let auxProduct = JSON.parse(JSON.stringify(product)) // copy object
         if (product.photos.length === 0) {
@@ -183,10 +183,6 @@ const SimpleTable = ({ items, setItems }) => {
     }
 
     function handleUpdate() {
-        console.info(`inputBrand: ${JSON.stringify(inputBrand)}`);
-        console.info(`inputComponent: ${JSON.stringify(inputComponent)}`);
-        console.log(newPicturesList);
-        console.log(deletedPicturesList);
 
         const form = new FormData();
         form.append("partNumber", itemPartNumber);
@@ -204,7 +200,7 @@ const SimpleTable = ({ items, setItems }) => {
 
         console.info(`deletedPicturesList: ${JSON.stringify(deletedPicturesList)}`)
 
-        axios.put('/api/v2/component-detail/' + currentItem._id, form, { headers: {'Content-Type': 'multipart/form-data' } }).then(res => {
+        axios.put('/api/v2/component-detail/' + currentItem._id, form, { headers: { 'Content-Type': 'multipart/form-data' } }).then(res => {
             const itemResponse = {
                 _id: res.data._id,
                 partNumber: res.data.partNumber,
@@ -277,6 +273,26 @@ const SimpleTable = ({ items, setItems }) => {
         setProductPictures([...productPictures, ...e.target.files]);
         setNewPicturesList([...newPicturesList, ...e.target.files])
     };
+
+    function handleDeleteItemClose() {
+        setOpenDeleteItem(false);
+        setCurrentItem(initialCurrentItem);
+    }
+
+    function deleteItem(item) {
+        setCurrentItem(item);
+        setOpenDeleteItem(true);
+    }
+
+    function handleDeleteItem() {
+        axios.delete('/api/v1/component-detail/' + currentItem._id).then(res => {
+            console.info(`Se eliminó item: ${JSON.stringify(res.data)}`);
+        });
+        let updateItems = items.slice();
+        updateItems = updateItems.filter(x => x._id !== currentItem._id);
+        setItems(updateItems);
+        handleDeleteItemClose();
+    }
 
     return (
         <Box width="100%" overflow="auto">
@@ -401,7 +417,6 @@ const SimpleTable = ({ items, setItems }) => {
                                         />
                                     </Fragment>
                                     <br></br>
-                                    <br></br>
                                     <StyledFormControlLabel
                                         control={
                                             <Switch
@@ -473,6 +488,26 @@ const SimpleTable = ({ items, setItems }) => {
                                 <DialogActions>
                                     <Button onClick={handleClosePhotosDialog} color="secondary">
                                         Cerrar
+                                    </Button>
+                                </DialogActions>
+                            </Dialog>
+                            <Dialog
+                                open={openDeleteItem}
+                                TransitionComponent={Transition}
+                                keepMounted
+                                onClose={handleDeleteItemClose}
+                                aria-labelledby="alert-dialog-delete"
+                                aria-describedby="alert-dialog-delete-description"
+                            >
+                                <DialogTitle id="alert-dialog-slide-title">
+                                    {"Desea eliminar " + currentItem.description + "?"}
+                                </DialogTitle>
+                                <DialogActions>
+                                    <Button onClick={handleDeleteItemClose} color="secondary">
+                                        Cancelar
+                                    </Button>
+                                    <Button onClick={handleDeleteItem} color="primary">
+                                        Eliminar
                                     </Button>
                                 </DialogActions>
                             </Dialog>
