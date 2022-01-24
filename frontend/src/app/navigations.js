@@ -1,6 +1,6 @@
 export const navigations = [
     {
-        name: 'Catálogo',
+        name: 'Inicio',
         path: '/product-catalog',
         icon: 'dashboard',
     },

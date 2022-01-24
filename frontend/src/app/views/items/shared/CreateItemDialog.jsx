@@ -1,14 +1,18 @@
 import React, { useState } from 'react'
-import Button from '@mui/material/Button'
-import Dialog from '@mui/material/Dialog'
-import DialogActions from '@mui/material/DialogActions'
-import DialogContent from '@mui/material/DialogContent'
-import DialogTitle from '@mui/material/DialogTitle'
-import Slide from '@mui/material/Slide'
 import { styled } from '@mui/system'
-import TextField from '@mui/material/TextField'
-import FormControlLabel from '@mui/material/FormControlLabel'
 import Switch from '@mui/material/Switch'
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+    Icon,
+    Slide,
+    TextField,
+    FormControlLabel
+} from '@mui/material'
 import AutocompleteCombo from './AutocompleteCombo'
 import axios from '../../../../axios'
 
@@ -32,6 +36,31 @@ const StyledAutocompleteCombo = styled(AutocompleteCombo)(({ theme }) => ({
     margin: theme.spacing(1),
 }))
 
+const AppButtonRoot = styled('div')(({ theme }) => ({
+    [theme.breakpoints.down('sm')]: {
+        margin: '16px',
+    },
+    '& .breadcrumb': {
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            marginBottom: '16px',
+        },
+    },
+    '& .button': {
+        margin: theme.spacing(1),
+    },
+    '& .input': {
+        display: 'none',
+    },
+}))
+
+const DivUploadImages = styled('div')(() => ({
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'left',
+    alignItems: 'center'
+}))
+
 export default function CreateItemDialog({ items, setItems }) {
     const [open, setOpen] = useState(false)
     const [state, setState] = useState(true)
@@ -41,6 +70,7 @@ export default function CreateItemDialog({ items, setItems }) {
     const [itemPrice, setItemPrice] = useState(0.00)
     const [inputBrandValue, setInputBrandValue] = useState(null);
     const [inputComponentValue, setInputComponentValue] = useState(null);
+    const [productPictures, setProductPictures] = useState([]);
 
     function handleClickOpen() {
         setOpen(true)
@@ -48,6 +78,11 @@ export default function CreateItemDialog({ items, setItems }) {
 
     function handleClose() {
         setItemName('')
+        setItemPartNumber('')
+        setItemPrice(0.00)
+        setInputBrandValue(null)
+        setInputComponentValue(null)
+        setProductPictures([])
         setOpen(false)
     }
 
@@ -57,7 +92,7 @@ export default function CreateItemDialog({ items, setItems }) {
         } else {
             setStateName('Activo');
         }
-        
+
         setState(!state);
     }
 
@@ -75,15 +110,19 @@ export default function CreateItemDialog({ items, setItems }) {
 
     function addItem() {
         if (itemPartNumber.length > 0 && itemName.length > 0 && !isNaN(itemPrice) && inputBrandValue !== null && inputComponentValue !== null) {
-            const request = {
-                partNumber: itemPartNumber,
-                description: itemName,
-                price: itemPrice,
-                idBrand: inputBrandValue._id,
-                idComponent: inputComponentValue._id,
-                status: state ? 1 : 0
+            const form = new FormData();
+            form.append("partNumber", itemPartNumber);
+            form.append("description", itemName);
+            form.append("price", itemPrice);
+            form.append("idBrand", inputBrandValue._id);
+            form.append("idComponent", inputComponentValue._id);
+            form.append("status", state ? 1 : 0);
+
+            for (let pic of productPictures) {
+                form.append("productPicture", pic);
             }
-            axios.post('/api/v1/component-detail', request).then(res => {
+
+            axios.post('/api/v2/component-detail', form, { headers: {'Content-Type': 'multipart/form-data' } }).then(res => {
                 const itemResponse = {
                     _id: res.data._id,
                     partNumber: res.data.partNumber,
@@ -97,9 +136,10 @@ export default function CreateItemDialog({ items, setItems }) {
                         _id: res.data.idComponent,
                         description: inputComponentValue.description
                     },
-                    status: res.data.status
+                    status: res.data.status,
+                    photos: res.data.photos
                 }
-    
+
                 let newItems = items.slice();
                 newItems.unshift(itemResponse);
                 console.log(newItems)
@@ -110,7 +150,17 @@ export default function CreateItemDialog({ items, setItems }) {
             // TODO: Mostrar toggle snackbar
             console.log('Completar nombre del item');
         }
-        
+
+    }
+
+    const handleProductPictures = (e) => {
+        setProductPictures([...productPictures, ...e.target.files]);
+    };
+
+    function handleDeleteUploadedImage(pic) {
+        let newProductPitures = productPictures.slice();
+        newProductPitures = newProductPitures.filter(x => x !== pic);
+        setProductPictures(newProductPitures);
     }
 
     return (
@@ -170,6 +220,33 @@ export default function CreateItemDialog({ items, setItems }) {
                         }
                         label={stateName}
                     />
+                    {productPictures.length
+                        ? productPictures.map((pic, index) => (
+                            <DivUploadImages>
+                                <IconButton className="button"
+                                    aria-label="Delete"
+                                    color='error'
+                                    onClick={() => handleDeleteUploadedImage(pic)}
+                                >
+                                    <Icon>clear</Icon>
+                                </IconButton>
+                                <div key={index}>{pic.name}</div>
+                            </DivUploadImages>
+                        ))
+                        : null}
+                    <AppButtonRoot>
+                        <input
+                            accept="image/*"
+                            className="input"
+                            id="icon-button-file"
+                            multiple
+                            type="file"
+                            onChange={handleProductPictures}
+                        />
+                        <label htmlFor="icon-button-file">
+                            <StyledButton component="span">Agregar imagen</StyledButton>
+                        </label>
+                    </AppButtonRoot>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="secondary">

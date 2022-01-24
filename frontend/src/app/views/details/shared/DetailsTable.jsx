@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Paragraph } from 'app/components/Typography'
 import { Box, styled } from '@mui/system'
 import {
+    Button,
     Card,
     FormControl,
     Icon,
@@ -19,6 +20,7 @@ import SwipeableTextMobileStepper from './SwipeableTextMobileStepper'
 import Slide from '@mui/material/Slide'
 import Dialog from '@mui/material/Dialog'
 import DialogContent from '@mui/material/DialogContent'
+import DialogActions from '@mui/material/DialogActions'
 import axios from '../../../../axios'
 
 const CardHeader = styled('div')(() => ({
@@ -249,6 +251,11 @@ const TopSellingTable = () => {
                                             componentName={productImageSelected.component.description}
                                         />
                                     </DialogContent>
+                                    <DialogActions>
+                                        <Button onClick={handleClose} color="secondary">
+                                            Cerrar
+                                        </Button>
+                                    </DialogActions>
                                 </Dialog>
                             </TableRow>
                         ))}

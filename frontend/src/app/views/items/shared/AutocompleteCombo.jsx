@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect } from 'react'
 import { TextField, Autocomplete } from '@mui/material'
 import axios from '../../../../axios'
 
-const AutocompleteCombo = ({ getPath, label, setInputValue }) => {
+const AutocompleteCombo = ({ getPath, label, setInputFormValue }) => {
 
     const [suggestions, setSuggestions] = useState([]);
 
@@ -20,9 +20,9 @@ const AutocompleteCombo = ({ getPath, label, setInputValue }) => {
                 getOptionLabel={(option) => option.description}
                 onChange={(event, newValue) => {
                     if (newValue) {
-                        setInputValue(newValue);
+                        setInputFormValue(newValue);
                     } else {
-                        setInputValue(null);
+                        setInputFormValue(null);
                     }
                 }}
                 renderInput={(params) => (
