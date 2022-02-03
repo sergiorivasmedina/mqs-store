@@ -15,7 +15,7 @@ app.post("/login", async (req, res) => {
         return res.status(400).send('Cannot find user')
     }
 
-    const user = await User.findOne({ mail: email })
+    const user = await User.findOne({ mail: email, status: 1 })
 
     if (user == null || user.length == 0) {
         return res.status(404).send('E-mail doesn\'t exist')
@@ -28,6 +28,7 @@ app.post("/login", async (req, res) => {
                 email: user.mail,
                 name: user.name,
                 role: user.idRole,
+                availableBrands: user.availableBrands
             }
             jwt.sign({ user }, 'secretKey', { expiresIn: '10h' }, (err, accessToken) => {
                 res.json({ accessToken, user: userDto })

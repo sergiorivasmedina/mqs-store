@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose
+const BrandSchema = require('../brands/brand.model').schema
 
 const UserSchema = new Schema({
     name: { type: String, require: true },
@@ -8,7 +9,7 @@ const UserSchema = new Schema({
     ruc: { type: String, require: false },
     status: { type: Number, require: true },
     idRole: {type: Schema.Types.ObjectId, require: true },
-    availableBrands: [{ type: Schema.Types.ObjectId }]
+    availableBrands: [BrandSchema]
 }, { versionKey: false })
 
 module.exports = mongoose.model('User', UserSchema)

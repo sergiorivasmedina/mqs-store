@@ -12,6 +12,7 @@ import detailsRoutes from "app/views/details/DetailsRoutes";
 import brandsRoutes from "app/views/brands/BrandsRoutes";
 import componetsRoutes from "app/views/brand-components/ComponentsRoutes";
 import itemsRoutes from "app/views/items/ItemsRoutes";
+import usersRoutes from "app/views/users/UsersRoutes";
 
 export const AllPages = () => {
   return [
@@ -31,6 +32,7 @@ export const AllPages = () => {
         ...brandsRoutes,
         ...componetsRoutes,
         ...itemsRoutes,
+        ...usersRoutes,
       ],
     },
     ...sessionRoutes,

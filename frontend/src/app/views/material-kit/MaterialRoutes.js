@@ -20,6 +20,7 @@ const AppExpansionPanel = Loadable(lazy(() => import("./expansion-panel/AppExpan
 const BrandsView = Loadable(lazy(() => import("../brands/Brands")));
 const ComponentsView = Loadable(lazy(() => import("../brand-components/Components")));
 const ItemsView = Loadable(lazy(() => import("../items/Items")));
+const UsersView = Loadable(lazy(() => import("../users/Users")))
 
 const materialRoutes = [
     {
@@ -33,6 +34,10 @@ const materialRoutes = [
     {
         path: '/items',
         element: <ItemsView />,
+    },
+    {
+        path: '/users',
+        element: <UsersView />,
     }
     ,{
         path: '/material/table',

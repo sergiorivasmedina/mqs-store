@@ -10,6 +10,7 @@ import detailsRoutes from './views/details/DetailsRoutes'
 import brandsRoutes from './views/brands/BrandsRoutes'
 import componentsRoutes from './views/brand-components/ComponentsRoutes'
 import itemsRoutes from './views/items/ItemsRoutes'
+import usersRoutes from './views/users/UsersRoutes'
 
 const redirectRoute = [
     {
@@ -36,6 +37,7 @@ const routes = [
     ...brandsRoutes,
     ...componentsRoutes,
     ...itemsRoutes,
+    ...usersRoutes,
 ]
 
 export default routes
