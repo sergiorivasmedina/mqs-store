@@ -30,7 +30,7 @@ const Users = () => {
 
     return (
         <Container>
-            <SimpleCard title="Gestión de Items">
+            <SimpleCard title="Gestión de usuarios">
                 <ItemsTable users={users} setUsers={setUsers} />
             </SimpleCard>
             <Box py="12px" />

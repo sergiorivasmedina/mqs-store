@@ -65,6 +65,9 @@ const SimpleTable = ({ users, setUsers }) => {
     const [currentAvailableBrands, setcurrentAvailableBrands] = useState([]);
     const [currentAvailableBrandsSuggestions, setCurrentAvailableBrandsSuggestions] = useState([]);
 
+    // delete user variables
+    const [openDeleteUser, setOpenDeleteUser] = useState(false);
+
     useEffect(() => {
 
         // Get all roles from backend
@@ -158,6 +161,30 @@ const SimpleTable = ({ users, setUsers }) => {
         })
     }
 
+    function openDeleteUserDialog(user) {
+        setUserId(user._id);
+        setCurrentName(user.name);
+        setCurrentEmail(user.email);
+        setOpenDeleteUser(true);
+    }
+
+    function handleDeleteUserClose() {
+        setUserId('');
+        setCurrentName('');
+        setCurrentEmail('');
+        setOpenDeleteUser(false);
+    }
+
+    function handleDeleteUser() {
+        axios.delete('/api/v1/user/' + userId).then(res => {
+            console.info(`Se eliminó usuario con id: ${userId}`);
+        });
+        let updateUsers = users.slice();
+        updateUsers = updateUsers.filter(x => x._id !== userId);
+        setUsers(updateUsers);
+        handleDeleteUserClose();
+    }
+
     return (
         <Box width="100%" overflow="auto">
             <StyledTable>
@@ -183,7 +210,7 @@ const SimpleTable = ({ users, setUsers }) => {
                                 <IconButton onClick={() => editUser(user)}>
                                     <Icon color="secondary">edit</Icon>
                                 </IconButton>
-                                <IconButton onClick={() => { }}>
+                                <IconButton onClick={() => openDeleteUserDialog(user)}>
                                     <Icon color="delete">delete</Icon>
                                 </IconButton>
                             </TableCell>
@@ -284,6 +311,26 @@ const SimpleTable = ({ users, setUsers }) => {
                                     </Button>
                                     <Button onClick={updateUser} color="primary">
                                         Actualizar
+                                    </Button>
+                                </DialogActions>
+                            </Dialog>
+                            <Dialog
+                                open={openDeleteUser}
+                                TransitionComponent={Transition}
+                                keepMounted
+                                onClose={handleDeleteUserClose}
+                                aria-labelledby="alert-dialog-delete"
+                                aria-describedby="alert-dialog-delete-description"
+                            >
+                                <DialogTitle id="alert-dialog-slide-title">
+                                    {`Desea eliminar usuario "${currentName} (${currentEmail})" ?`}
+                                </DialogTitle>
+                                <DialogActions>
+                                    <Button onClick={handleDeleteUserClose} color="secondary">
+                                        Cancelar
+                                    </Button>
+                                    <Button onClick={handleDeleteUser} color="primary">
+                                        Eliminar
                                     </Button>
                                 </DialogActions>
                             </Dialog>

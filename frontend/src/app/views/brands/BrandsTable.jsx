@@ -143,7 +143,7 @@ const SimpleTable = ({ brands, setBrands }) => {
                             <TableCell>{getStatus(brand.status)}</TableCell>
                             <TableCell>
                                 <IconButton onClick={() => editBrand(brand)}>
-                                    <Icon color="primary">edit</Icon>
+                                    <Icon color="secondary">edit</Icon>
                                 </IconButton>
                             </TableCell>
                             <Dialog
