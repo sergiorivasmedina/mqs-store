@@ -196,8 +196,6 @@ const SimpleTable = ({ items, setItems }) => {
 
         form.append("deletedPictures", JSON.stringify(deletedPicturesList));
 
-        console.info(`deletedPicturesList: ${JSON.stringify(deletedPicturesList)}`)
-
         axios.put('/api/v2/component-detail/' + currentItem._id, form, { headers: { 'Content-Type': 'multipart/form-data' } }).then(res => {
             const itemResponse = {
                 _id: res.data._id,
@@ -263,8 +261,13 @@ const SimpleTable = ({ items, setItems }) => {
         let newProductPitures = productPictures.slice();
         newProductPitures = newProductPitures.filter(x => x !== pic);
         setProductPictures(newProductPitures);
-        pic.name = 'items/' + pic.name;
-        setDeletedPicturesList([...deletedPicturesList, ...[pic]]);
+        let newPic = { ...pic }
+        newPic.name = 'items/' + pic.name;
+        setDeletedPicturesList([...deletedPicturesList, ...[newPic]]);
+
+        let newPictures = newProductPitures.slice();
+        newPictures = newPictures.filter(x => x !== pic);
+        setNewPicturesList(newPictures);
     }
 
     const handleProductPictures = (e) => {
@@ -428,7 +431,7 @@ const SimpleTable = ({ items, setItems }) => {
                                     />
 
                                     {productPictures.length > 0
-                                        ? productPictures.map((pic, index) => (
+                                        ? productPictures.map((pic, picIndex) => (
                                             <DivUploadImages>
                                                 <IconButton className="button"
                                                     aria-label="Delete"
@@ -437,7 +440,7 @@ const SimpleTable = ({ items, setItems }) => {
                                                 >
                                                     <Icon>clear</Icon>
                                                 </IconButton>
-                                                <div key={index + pic.name}>{pic.name}</div>
+                                                <div key={picIndex + pic.name}>{pic.name}</div>
                                             </DivUploadImages>
                                         ))
                                         : null}
@@ -449,6 +452,9 @@ const SimpleTable = ({ items, setItems }) => {
                                             multiple
                                             type="file"
                                             onChange={handleProductPictures}
+                                            onClick={(event) => {
+                                                event.target.value = null
+                                            }}
                                         />
                                         <label htmlFor="upload-image-button">
                                             <StyledButton component="span">Agregar imagen</StyledButton>

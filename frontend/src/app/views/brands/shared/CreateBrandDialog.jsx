@@ -1,14 +1,18 @@
 import React, { useState } from 'react'
-import Button from '@mui/material/Button'
-import Dialog from '@mui/material/Dialog'
-import DialogActions from '@mui/material/DialogActions'
-import DialogContent from '@mui/material/DialogContent'
-import DialogTitle from '@mui/material/DialogTitle'
-import Slide from '@mui/material/Slide'
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+    Icon,
+    Slide,
+    TextField,
+    FormControlLabel,
+    Switch
+} from '@mui/material'
 import { styled } from '@mui/system'
-import TextField from '@mui/material/TextField'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Switch from '@mui/material/Switch'
 import axios from '../../../../axios'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -27,11 +31,37 @@ const StyledFormControlLabel = styled(FormControlLabel)(({ theme }) => ({
     margin: theme.spacing(1),
 }))
 
+const DivUploadImages = styled('div')(() => ({
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'left',
+    alignItems: 'center'
+}))
+
+const AppButtonRoot = styled('div')(({ theme }) => ({
+    [theme.breakpoints.down('sm')]: {
+        margin: '16px',
+    },
+    '& .breadcrumb': {
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            marginBottom: '16px',
+        },
+    },
+    '& .button': {
+        margin: theme.spacing(1),
+    },
+    '& .input': {
+        display: 'none',
+    },
+}))
+
 export default function CreateBrandDialog({ brands, setBrands }) {
-    const [open, setOpen] = useState(false)
-    const [state, setState] = useState(true)
-    const [stateName, setStateName] = useState('Activo')
-    const [brandName, setBrandName] = useState('')
+    const [open, setOpen] = useState(false);
+    const [state, setState] = useState(true);
+    const [stateName, setStateName] = useState('Activo');
+    const [brandName, setBrandName] = useState('');
+    const [productPictures, setProductPictures] = useState([]);
 
     function handleClickOpen() {
         setOpen(true)
@@ -39,6 +69,7 @@ export default function CreateBrandDialog({ brands, setBrands }) {
 
     function handleClose() {
         setBrandName('')
+        setProductPictures([]);
         setOpen(false)
     }
 
@@ -48,7 +79,7 @@ export default function CreateBrandDialog({ brands, setBrands }) {
         } else {
             setStateName('Activo');
         }
-        
+
         setState(!state);
     }
 
@@ -58,27 +89,40 @@ export default function CreateBrandDialog({ brands, setBrands }) {
 
     function addBrand() {
         if (brandName.length > 0) {
-            const request = {
-                description: brandName,
-                status: state ? 1 : 0
+            const form = new FormData();
+            form.append("description", brandName);
+            form.append("status", state ? 1 : 0);
+
+            for (let pic of productPictures) {
+                form.append("productPicture", pic);
             }
-            axios.post('/api/v1/brand', request).then(res => {
+
+            axios.post('/api/v2/brand', form, { headers: {'Content-Type': 'multipart/form-data' } }).then(res => {
                 const brandResponse = {
                     _id: res.data._id,
                     description: res.data.description,
-                    status: res.data.status
+                    status: res.data.status,
+                    photos: res.data.photos
                 }
-    
+
                 let newBrands = brands.slice();
                 newBrands.unshift(brandResponse);
-                setBrands(newBrands)
+                setBrands(newBrands);
                 handleClose();
             })
         } else {
-            // TODO: Mostrar toggle snackbar
-            console.log('Completar nombre de la nueva marca');
+            console.log('Completear nombre de la marca');
         }
-        
+    }
+
+    const handleProductPictures = (e) => {
+        setProductPictures([...productPictures, ...e.target.files]);
+    };
+
+    function handleDeleteUploadedImage(pic) {
+        let newProductPitures = productPictures.slice();
+        newProductPitures = newProductPitures.filter(x => x !== pic);
+        setProductPictures(newProductPitures);
     }
 
     return (
@@ -118,6 +162,40 @@ export default function CreateBrandDialog({ brands, setBrands }) {
                         }
                         label={stateName}
                     />
+                    {productPictures.length
+                        ? productPictures.map((pic, index) => (
+                            <DivUploadImages>
+                                <IconButton className="button"
+                                    aria-label="Delete"
+                                    color='error'
+                                    onClick={() => handleDeleteUploadedImage(pic)}
+                                >
+                                    <Icon>clear</Icon>
+                                </IconButton>
+                                <div key={index}>{pic.name}</div>
+                            </DivUploadImages>
+                        ))
+                        : null}
+                    <AppButtonRoot>
+                        <input
+                            accept="image/*"
+                            className="input"
+                            id="upload-image-button"
+                            multiple
+                            type="file"
+                            onChange={handleProductPictures}
+                            onClick={(event) => {
+                                event.target.value = null
+                            }}
+                        />
+                        {productPictures.length > 0
+                            ? <label htmlFor="upload-image-button-disable">
+                                <StyledButton component="span" disabled>Agregar imagen</StyledButton>
+                            </label>
+                            : <label htmlFor="upload-image-button">
+                                <StyledButton component="span">Agregar imagen</StyledButton>
+                            </label>}
+                    </AppButtonRoot>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="secondary">

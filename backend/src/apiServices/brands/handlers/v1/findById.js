@@ -1,7 +1,7 @@
 const express = require("express")
 const app = express()
 
-const Brand = require('../brand.model')
+const Brand = require('../../brand.model')
 
 app.get("/brand/:id", async (req, res) => {
     const brand = await Brand.findById(req.params.id)

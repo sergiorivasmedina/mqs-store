@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import BrandsTable from './BrandsTable'
+import BrandsTable from './shared/BrandsTable'
 import { SimpleCard } from 'app/components'
 import { Box, styled } from '@mui/system'
 import CreateBrandDialog from './shared/CreateBrandDialog'
