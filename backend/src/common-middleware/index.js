@@ -7,6 +7,7 @@ const bucketName = process.env.AWS_BUCKET_NAME;
 
 const s3 = new aws.S3();
 
+// upload image for items
 exports.uploadS3 = multer({
     storage: multerS3({
         s3: s3,
@@ -17,6 +18,21 @@ exports.uploadS3 = multer({
         key: function (req, file, cb) {
             let filename = file.originalname.replace(' ', '_').replace('/', '_')
             cb(null, `items/${Date.now()}-${filename}`)
+        }
+    })
+})
+
+// upload image for brands
+exports.uploadBrandToS3 = multer({
+    storage: multerS3({
+        s3: s3,
+        bucket: bucketName,
+        metadata: function (req, file, cb) {
+            cb(null, { fieldName: file.fieldname });
+        },
+        key: function (req, file, cb) {
+            let filename = file.originalname.replace(' ', '_').replace('/', '_')
+            cb(null, `brands/${Date.now()}-${filename}`)
         }
     })
 })
@@ -44,6 +60,7 @@ function deleteFileStream(fileKey) {
 }
 exports.deleteFileStream = deleteFileStream;
 
+// delete a list of S3 images
 function deleteFileStreamList(keys) {
     const objects = keys.map(key => ({ Key: key }));
     const params = {

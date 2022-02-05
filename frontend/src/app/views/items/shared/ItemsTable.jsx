@@ -448,7 +448,7 @@ const SimpleTable = ({ items, setItems }) => {
                                         <input
                                             accept="image/*"
                                             className="input"
-                                            id="upload-image-button"
+                                            id="upload-image-item-button"
                                             multiple
                                             type="file"
                                             onChange={handleProductPictures}
@@ -456,7 +456,7 @@ const SimpleTable = ({ items, setItems }) => {
                                                 event.target.value = null
                                             }}
                                         />
-                                        <label htmlFor="upload-image-button">
+                                        <label htmlFor="upload-image-item-button">
                                             <StyledButton component="span">Agregar imagen</StyledButton>
                                         </label>
                                     </AppButtonRoot>

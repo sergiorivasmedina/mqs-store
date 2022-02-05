@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const { uploadS3 } = require('../../../../common-middleware');
+const { uploadBrandToS3 } = require('../../../../common-middleware');
 
 // Brand Model
 const Brand = require('../../brand.model')
@@ -15,7 +15,7 @@ function addImagesLinks(files, photos) {
     }
 }
 
-app.post('/brand', uploadS3.array("productPicture"), async (req, res) => {
+app.post('/brand', uploadBrandToS3.array("productPicture"), async (req, res) => {
     const { description, status } = req.body;
 
     let photos = [];

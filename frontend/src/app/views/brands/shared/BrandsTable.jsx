@@ -113,6 +113,7 @@ const SimpleTable = ({ brands, setBrands }) => {
     }
 
     function editBrand(brand) {
+        console.log(brand)
         setBrandName(brand.description)
         setState(brand.status)
         let currentState = brand.status ? 'Activo' : 'Inactivo'
@@ -177,12 +178,13 @@ const SimpleTable = ({ brands, setBrands }) => {
     function processPhotos(brand) {
         let list = [];
         brand.photos.forEach(element => {
-            list.push({ name: element.replace('items/', '') });
+            list.push({ name: element.replace('brands/', '') });
         });
         setProductPictures(list);
     }
 
     const handleProductPictures = (e) => {
+        console.log(e.target.files)
         setProductPictures([...productPictures, ...e.target.files]);
         setNewPicturesList([...newPicturesList, ...e.target.files]);
     };
@@ -192,7 +194,7 @@ const SimpleTable = ({ brands, setBrands }) => {
         newProductPitures = newProductPitures.filter(x => x !== pic);
         setProductPictures(newProductPitures);
         let newPic = { ...pic }
-        newPic.name = 'items/' + pic.name;
+        newPic.name = 'brands/' + pic.name;
         setDeletedPicturesList([...deletedPicturesList, ...[newPic]]);
 
         let newPictures = newProductPitures.slice();
@@ -314,7 +316,7 @@ const SimpleTable = ({ brands, setBrands }) => {
                                         <input
                                             accept="image/*"
                                             className="input"
-                                            id="upload-image-button"
+                                            id="upload-image-brand-button"
                                             multiple
                                             type="file"
                                             onChange={handleProductPictures}
@@ -323,10 +325,10 @@ const SimpleTable = ({ brands, setBrands }) => {
                                             }}
                                         />
                                         {productPictures.length > 0
-                                            ? <label htmlFor="upload-image-button-disable">
+                                            ? <label htmlFor="upload-image-brand-button-disable">
                                                 <StyledButton component="span" disabled>Agregar imagen</StyledButton>
                                             </label>
-                                            : <label htmlFor="upload-image-button">
+                                            : <label htmlFor="upload-image-brand-button">
                                                 <StyledButton component="span">Agregar imagen</StyledButton>
                                             </label>}
                                     </AppButtonRoot>

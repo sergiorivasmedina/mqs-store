@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const { uploadS3, deleteFileStream } = require('../../../../common-middleware');
+const { uploadBrandToS3, deleteFileStream } = require('../../../../common-middleware');
 
 const Brand = require('../../brand.model');
 
@@ -32,7 +32,7 @@ function callDeletePhotos(deletedPictures, photos) {
     return photos;
 }
 
-app.put('/brand/:id', uploadS3.array("productPicture"), async (req, res) => {
+app.put('/brand/:id', uploadBrandToS3.array("productPicture"), async (req, res) => {
     const { description, status, deletedPictures } = req.body
 
     // Se debe llamar el objeto para validar si tiene datos en photos

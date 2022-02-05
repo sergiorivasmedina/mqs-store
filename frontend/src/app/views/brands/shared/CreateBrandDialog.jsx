@@ -180,7 +180,7 @@ export default function CreateBrandDialog({ brands, setBrands }) {
                         <input
                             accept="image/*"
                             className="input"
-                            id="upload-image-button"
+                            id="upload-new-image-brand-button"
                             multiple
                             type="file"
                             onChange={handleProductPictures}
@@ -189,10 +189,10 @@ export default function CreateBrandDialog({ brands, setBrands }) {
                             }}
                         />
                         {productPictures.length > 0
-                            ? <label htmlFor="upload-image-button-disable">
+                            ? <label htmlFor="upload-new-image-brand-button-disable">
                                 <StyledButton component="span" disabled>Agregar imagen</StyledButton>
                             </label>
-                            : <label htmlFor="upload-image-button">
+                            : <label htmlFor="upload-new-image-brand-button">
                                 <StyledButton component="span">Agregar imagen</StyledButton>
                             </label>}
                     </AppButtonRoot>
