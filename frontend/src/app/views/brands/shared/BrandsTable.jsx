@@ -217,6 +217,23 @@ const SimpleTable = ({ brands, setBrands }) => {
         setOpenDialogPhotos(false);
     }
 
+    function deleteBrand(brand) {
+        axios.delete('/api/v1/brand/' + brand._id).then(res => {
+            console.info(`Se eliminó marca: ${JSON.stringify(res.data)}`);
+
+            let updateBrands = brands.slice();
+            updateBrands = updateBrands.filter(x => x._id !== brand._id);
+            setBrands(updateBrands);
+            handleClosePhotosDialog();
+
+        }).catch(error => {
+            console.log(error)
+            if (error.response.status === 412) {
+                alert(JSON.stringify(error.response.data.message));
+            }
+        });
+    }
+
     return (
         <Box width="100%" overflow="auto">
             <StyledTable>
@@ -243,7 +260,7 @@ const SimpleTable = ({ brands, setBrands }) => {
                                 <IconButton onClick={() => editBrand(brand)}>
                                     <Icon color="secondary">edit</Icon>
                                 </IconButton>
-                                <IconButton onClick={() => { }}>
+                                <IconButton onClick={() => deleteBrand(brand)}>
                                     <Icon color="delete">delete</Icon>
                                 </IconButton>
                             </TableCell>

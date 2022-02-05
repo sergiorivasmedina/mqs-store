@@ -43,3 +43,16 @@ function deleteFileStream(fileKey) {
     });
 }
 exports.deleteFileStream = deleteFileStream;
+
+function deleteFileStreamList(keys) {
+    const objects = keys.map(key => ({ Key: key }));
+    const params = {
+        Bucket: bucketName,
+        Delete: { Objects: objects }
+    }
+    s3.deleteObjects(params, function (err, data) {
+        if (err) console.log(err, err.stack); // an error occurred
+        else console.log(data);           // successful response
+    })
+}
+exports.deleteFileStreamList = deleteFileStreamList;
