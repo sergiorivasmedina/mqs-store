@@ -9,7 +9,7 @@ app.delete('/brand/:id', async (req, res) => {
     const idBrand = req.params.id;
     const precondition_failed = 'Existen items asignados a esta marca. Se requiere eliminar primero esos items y luego la marca.';
 
-    // validar que no tenga dependencias con componentes
+    // validar que no tenga dependencias con items
     const items = await Item.find({ idBrand: idBrand });
 
     // eliminar marca: fotos y luego registro

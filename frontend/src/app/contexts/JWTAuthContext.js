@@ -19,7 +19,7 @@ const isValidToken = (accessToken) => {
     return decodedToken.exp > currentTime
 }
 
-const setSession = (accessToken) => {
+const setSession = (accessToken, user) => {
     if (accessToken) {
         localStorage.setItem('accessToken', accessToken)
         axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`
@@ -92,7 +92,7 @@ export const AuthProvider = ({ children }) => {
 
         const { accessToken, user } = response.data
 
-        setSession(accessToken)
+        setSession(accessToken, user)
 
         dispatch({
             type: 'LOGIN',
@@ -112,7 +112,7 @@ export const AuthProvider = ({ children }) => {
 
         const { accessToken, user } = response.data
 
-        setSession(accessToken)
+        setSession(accessToken, user)
 
         dispatch({
             type: 'REGISTER',
@@ -123,7 +123,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     const logout = () => {
-        setSession(null)
+        setSession(null, null)
         dispatch({ type: 'LOGOUT' })
     }
 
@@ -134,9 +134,9 @@ export const AuthProvider = ({ children }) => {
 
                 if (accessToken && isValidToken(accessToken)) {
                     console.log('Entró al condicional de accestoken')
-                    setSession(accessToken)
                     const response = await axios.get('/api/auth/profile')
                     const { user } = response.data
+                    setSession(accessToken, user)
 
                     dispatch({
                         type: 'INIT',

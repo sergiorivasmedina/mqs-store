@@ -30,7 +30,7 @@ app.post("/login", async (req, res) => {
                 role: user.idRole,
                 availableBrands: user.availableBrands
             }
-            jwt.sign({ user }, 'secretKey', { expiresIn: '10h' }, (err, accessToken) => {
+            jwt.sign({ user }, process.env.JWT_SECRET_KEY, { expiresIn: '10h' }, (err, accessToken) => {
                 res.json({ accessToken, user: userDto })
             })
         } else {

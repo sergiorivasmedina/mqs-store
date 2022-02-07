@@ -53,15 +53,19 @@ const StyledFormControlLabel = styled(FormControlLabel)(({ theme }) => ({
 }))
 
 const SimpleTable = ({ components, setComponents }) => {
+    const initialComponent = { description: '', status: 1 };
     const [open, setOpen] = useState(false)
     const [state, setState] = useState(true)
     const [stateName, setStateName] = useState('Activo')
     const [componentName, setcomponentName] = useState('')
-    const [currentComponent, setCurrentComponent] = useState(null)
+    const [currentComponent, setCurrentComponent] = useState(initialComponent)
+
+    // delete item
+    const [openDeleteComponent, setOpenDeleteComponent] = useState(false);
 
     function handleClose() {
         setcomponentName('')
-        setCurrentComponent(null)
+        setCurrentComponent(initialComponent)
         setOpen(false)
     }
 
@@ -87,7 +91,7 @@ const SimpleTable = ({ components, setComponents }) => {
             axios.put('/api/v1/component/' + currentComponent._id, request).then(res => {
                 let componentResponse = res.data;
                 let index_update = components.findIndex(x => x._id === currentComponent._id);
-    
+
                 let newComponents = components.slice();
                 newComponents[index_update].description = componentResponse.description;
                 newComponents[index_update].status = componentResponse.status;
@@ -96,8 +100,8 @@ const SimpleTable = ({ components, setComponents }) => {
         }
 
         // TODO: mostrar snackbar cuando no se cumpla la condicion anterior
-        
-        setCurrentComponent(null)
+
+        setCurrentComponent(initialComponent)
         setOpen(false)
     }
 
@@ -124,6 +128,33 @@ const SimpleTable = ({ components, setComponents }) => {
         return 'Estado desconocido';
     }
 
+    function deleteItem(component) {
+        setCurrentComponent(component);
+        setOpenDeleteComponent(true);
+    }
+
+    function handleDeleteComponentClose() {
+        setOpenDeleteComponent(false);
+        handleClose();
+    }
+
+    function handleDeleteComponent() {
+        axios.delete('/api/v1/component/' + currentComponent._id).then(res => {
+            console.info(`Se eliminó componente: ${JSON.stringify(res.data)}`);
+
+            let updateComponents = components.slice();
+            updateComponents = updateComponents.filter(x => x._id !== currentComponent._id);
+            setComponents(updateComponents);
+            handleDeleteComponentClose();
+        }).catch(error => {
+            console.log(error);
+            if (error.response.status === 412) {
+                alert(JSON.stringify(error.response.data.message));
+                handleDeleteComponentClose();
+            }
+        });
+    }
+
     return (
         <Box width="100%" overflow="auto">
             <StyledTable>
@@ -144,6 +175,9 @@ const SimpleTable = ({ components, setComponents }) => {
                             <TableCell>
                                 <IconButton onClick={() => editComponent(component)}>
                                     <Icon color="secondary">edit</Icon>
+                                </IconButton>
+                                <IconButton onClick={() => deleteItem(component)}>
+                                    <Icon color="delete">delete</Icon>
                                 </IconButton>
                             </TableCell>
                             <Dialog
@@ -185,6 +219,27 @@ const SimpleTable = ({ components, setComponents }) => {
                                     </Button>
                                     <Button onClick={handleUpdate} color="primary">
                                         Actualizar
+                                    </Button>
+                                </DialogActions>
+                            </Dialog>
+
+                            <Dialog
+                                open={openDeleteComponent}
+                                TransitionComponent={Transition}
+                                keepMounted
+                                onClose={handleDeleteComponentClose}
+                                aria-labelledby="alert-dialog-delete"
+                                aria-describedby="alert-dialog-delete-description"
+                            >
+                                <DialogTitle id="alert-dialog-slide-title">
+                                    {"Desea eliminar " + currentComponent.description + "?"}
+                                </DialogTitle>
+                                <DialogActions>
+                                    <Button onClick={handleDeleteComponentClose} color="secondary">
+                                        Cancelar
+                                    </Button>
+                                    <Button onClick={handleDeleteComponent} color="primary">
+                                        Eliminar
                                     </Button>
                                 </DialogActions>
                             </Dialog>
