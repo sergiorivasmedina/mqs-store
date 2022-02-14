@@ -49,7 +49,7 @@ const Footer = () => {
                     <FooterContent>
                         <Span sx={{ m: "auto" }}></Span>
                         <Paragraph sx={{ m: 0 }}>
-                            Maquisoporte 2022
+                            Maquisoporte 2022 v 1.0
                         </Paragraph>
                     </FooterContent>
                 </AppFooter>

@@ -71,6 +71,8 @@ export default function CreateItemDialog({ items, setItems }) {
     const [inputBrandValue, setInputBrandValue] = useState(null);
     const [inputComponentValue, setInputComponentValue] = useState(null);
     const [productPictures, setProductPictures] = useState([]);
+    const [brandValue, setBrandValue] = useState('');
+    const [componentValue, setComponentValue] = useState('');
 
     function handleClickOpen() {
         setOpen(true)
@@ -80,6 +82,8 @@ export default function CreateItemDialog({ items, setItems }) {
         setItemName('')
         setItemPartNumber('')
         setItemPrice(0.00)
+        setBrandValue('');
+        setComponentValue('');
         setInputBrandValue(null)
         setInputComponentValue(null)
         setProductPictures([])
@@ -122,7 +126,7 @@ export default function CreateItemDialog({ items, setItems }) {
                 form.append("productPicture", pic);
             }
 
-            axios.post('/api/v2/component-detail', form, { headers: {'Content-Type': 'multipart/form-data' } }).then(res => {
+            axios.post('/api/v2/component-detail', form, { headers: { 'Content-Type': 'multipart/form-data' } }).then(res => {
                 const itemResponse = {
                     _id: res.data._id,
                     partNumber: res.data.partNumber,
@@ -205,9 +209,19 @@ export default function CreateItemDialog({ items, setItems }) {
                     />
                     <br></br>
                     <br></br>
-                    <StyledAutocompleteCombo getPath={'/api/v1/brands'} label={'Marca'} setInputFormValue={setInputBrandValue} />
+                    <StyledAutocompleteCombo
+                        getPath={'/api/v1/brands'}
+                        label={'Marca'}
+                        setInputFormValue={setInputBrandValue}
+                        value={inputBrandValue}
+                    />
                     <br></br>
-                    <StyledAutocompleteCombo getPath={'/api/v1/components'} label={'Componentes'} setInputFormValue={setInputComponentValue} />
+                    <StyledAutocompleteCombo
+                        getPath={'/api/v1/components'}
+                        label={'Componentes'}
+                        setInputFormValue={setInputComponentValue}
+                        value={inputComponentValue}
+                    />
                     <br></br>
                     <StyledFormControlLabel
                         control={

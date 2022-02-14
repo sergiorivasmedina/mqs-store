@@ -8,6 +8,8 @@ import {
     IconButton,
     Icon,
     TableRow,
+    TableFooter,
+    TablePagination
 } from '@mui/material'
 import { Box, styled } from '@mui/system'
 import Button from '@mui/material/Button'

@@ -2,9 +2,10 @@ import React, { Fragment, useState, useEffect } from 'react'
 import { TextField, Autocomplete } from '@mui/material'
 import axios from '../../../../axios'
 
-const AutocompleteCombo = ({ getPath, label, setInputFormValue }) => {
+const AutocompleteCombo = ({ getPath, label, setInputFormValue, value }) => {
 
     const [suggestions, setSuggestions] = useState([]);
+    const [inputValue, setInputValue] = useState('');
 
     useEffect(() => {
         // Get all components from backend
@@ -13,17 +14,20 @@ const AutocompleteCombo = ({ getPath, label, setInputFormValue }) => {
         })
     }, []);
 
+    useEffect(() => {
+        if (value == null) {
+            setInputValue({ description: '' });
+        }
+    }, [value]);
+
     return (
         <Fragment>
             <Autocomplete
                 options={suggestions}
                 getOptionLabel={(option) => option.description}
+                value={inputValue}
                 onChange={(event, newValue) => {
-                    if (newValue) {
-                        setInputFormValue(newValue);
-                    } else {
-                        setInputFormValue(null);
-                    }
+                    setInputFormValue(newValue);
                 }}
                 renderInput={(params) => (
                     <TextField

@@ -31,6 +31,7 @@ const ContentBox = styled(Box)(() => ({
 
 const IMG = styled('img')(() => ({
     width: '100%',
+    borderRadius: 12
 }))
 
 const JWTRoot = styled(JustifyBox)(() => ({
@@ -169,7 +170,7 @@ const JwtLogin = () => {
                                             />
                                         )}
                                     </Box>
-                                    <Span sx={{ mr: 1, ml: '20px' }}>o</Span>
+                                    {/* <Span sx={{ mr: 1, ml: '20px' }}>o</Span>
                                     <Button
                                         sx={{ textTransform: 'capitalize' }}
                                         onClick={() =>
@@ -177,16 +178,16 @@ const JwtLogin = () => {
                                         }
                                     >
                                         Registrarte
-                                    </Button>
+                                    </Button> */}
                                 </FlexBox>
-                                <Button
+                                {/* <Button
                                     sx={{ color: textPrimary }}
                                     onClick={() =>
                                         navigate('/session/forgot-password')
                                     }
                                 >
                                     ¿Olvidaste tu contraseña?
-                                </Button>
+                                </Button> */}
                             </ValidatorForm>
                         </ContentBox>
                     </Grid>
