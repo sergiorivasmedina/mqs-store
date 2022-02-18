@@ -8,7 +8,11 @@ app.get("/user/:id", async (req, res) => {
     res.json({
         _id: user._id,
         name: user.name,
+        lastName: user.lastName,
         email: user.mail,
+        cellphone: user.cellphone,
+        companyName: user.companyName,
+        ruc: user.ruc,
         status: user.status,
         idRole: user.idRole,
         availableBrands: user.availableBrands
