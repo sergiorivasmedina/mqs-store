@@ -125,7 +125,7 @@ const Items = () => {
                     </Tooltip>
                 </SearchContainer>
 
-                <ItemsTable items={itemsFiltered} setItems={setItems} />
+                <ItemsTable items={itemsFiltered} setItems={setItemsFiltered} />
             </SimpleCard>
             <Box py="12px" />
         </Container>

@@ -206,6 +206,7 @@ const SimpleTable = ({ items, setItems }) => {
             const itemResponse = {
                 _id: res.data._id,
                 partNumber: res.data.partNumber,
+                code: res.data.code,
                 description: res.data.description,
                 price: res.data.price,
                 brand: {
@@ -219,6 +220,7 @@ const SimpleTable = ({ items, setItems }) => {
                 status: res.data.status,
                 photos: res.data.photos
             }
+            console.log(itemResponse)
 
             let index_update = items.findIndex(x => x._id === currentItem._id);
 
