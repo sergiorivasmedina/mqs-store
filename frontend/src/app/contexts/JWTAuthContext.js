@@ -22,9 +22,12 @@ const isValidToken = (accessToken) => {
 const setSession = (accessToken, user) => {
     if (accessToken) {
         localStorage.setItem('accessToken', accessToken)
+        console.info(`set user: ${JSON.stringify(user)}`)
+        localStorage.setItem('user', user)
         axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`
     } else {
         localStorage.removeItem('accessToken')
+        localStorage.removeItem('user')
         delete axios.defaults.headers.common.Authorization
     }
 }
@@ -134,8 +137,10 @@ export const AuthProvider = ({ children }) => {
 
                 if (accessToken && isValidToken(accessToken)) {
                     console.log('Entró al condicional de accestoken')
-                    const response = await axios.get('/api/auth/profile')
-                    const { user } = response.data
+                    // const response = await axios.get('/api/auth/profile')
+                    // const { user } = response.data
+                    const user = localStorage.getItem('user')
+                    console.info(`user: ${user.id}`)
                     setSession(accessToken, user)
 
                     dispatch({

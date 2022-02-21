@@ -13,6 +13,7 @@ app.get('/component-details', async (_req, res) => {
         return {
             _id: response._id,
             partNumber: response.partNumber,
+            code: response.code,
             description: response.description,
             price: response.price,
             status: response.status,

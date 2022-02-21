@@ -89,7 +89,7 @@ const Items = () => {
 
     return (
         <Container>
-            <CreateItemDialog items={itemsFiltered} setItems={setItems} />
+            <CreateItemDialog items={itemsFiltered} setItems={setItemsFiltered} />
             <SimpleCard title="Gestión de Items">
                 <SearchContainer>
                     <Search>

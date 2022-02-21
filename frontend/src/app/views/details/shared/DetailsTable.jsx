@@ -184,7 +184,7 @@ const TopSellingTable = () => {
                                     colSpan={2}
                                     sx={{ px: 0, textTransform: 'capitalize' }}
                                 >
-                                    {product._id}
+                                    {product.code}
                                 </TableCell>
                                 <TableCell
                                     colSpan={2}

@@ -3,6 +3,7 @@ export const navigations = [
         name: 'Inicio',
         path: '/product-catalog',
         icon: 'dashboard',
+        permission: ['ALL']
     },
     {
         name: 'Administrar',
@@ -11,29 +12,36 @@ export const navigations = [
             {
                 name: 'Marcas',
                 path: '/brands',
+                permission: ['61cf52d0038836db155ecc42']
             },
             {
                 name: 'Componentes',
                 path: '/components',
+                permission: ['61cf52d0038836db155ecc42']
             },
             {
                 name: 'Items',
                 path: '/items',
+                permission: ['61cf52d0038836db155ecc42']
             },
             {
                 name: 'Usuarios',
                 path: '/users',
+                permission: ['61cf52d0038836db155ecc42']
             },
         ],
+        permission: ['61cf52d0038836db155ecc42']
     },
     {
         name: 'Dashboard',
         path: '/dashboard/default',
         icon: 'dashboard',
+        permission: ['61cf52d0038836db155ecc42']
     },
     {
         label: 'PAGES',
         type: 'label',
+        permission: ['61cf52d0038836db155ecc42']
     },
     {
         name: 'Session/Auth',
@@ -60,10 +68,12 @@ export const navigations = [
                 path: '/session/404',
             },
         ],
+        permission: ['61cf52d0038836db155ecc42']
     },
     {
         label: 'Components',
         type: 'label',
+        permission: ['61cf52d0038836db155ecc42']
     },
     {
         name: 'Components',
@@ -141,11 +151,11 @@ export const navigations = [
                 iconText: 'T',
             },
         ],
+        permission: ['61cf52d0038836db155ecc42']
     },
     {
         name: 'Charts',
         icon: 'trending_up',
-
         children: [
             {
                 name: 'Echarts',
@@ -153,6 +163,7 @@ export const navigations = [
                 iconText: 'E',
             },
         ],
+        permission: ['61cf52d0038836db155ecc42']
     },
     {
         name: 'Documentation',

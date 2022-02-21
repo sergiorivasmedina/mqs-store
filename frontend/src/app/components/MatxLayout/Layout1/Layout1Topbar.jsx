@@ -144,7 +144,7 @@ const Layout1Topbar = () => {
                         <NotificationBar />
                     </NotificationProvider> */}
 
-                    <ShoppingCart />
+                    {/* <ShoppingCart /> */}
 
                     <MatxMenu
                         menuButton={
@@ -164,15 +164,15 @@ const Layout1Topbar = () => {
                         <StyledItem>
                             <Link to="/">
                                 <Icon> home </Icon>
-                                <Span> Home </Span>
+                                <Span> Inicio </Span>
                             </Link>
                         </StyledItem>
-                        <StyledItem>
+                        {/* <StyledItem>
                             <Link to="/page-layouts/user-profile">
                                 <Icon> person </Icon>
                                 <Span> Profile </Span>
                             </Link>
-                        </StyledItem>
+                        </StyledItem> */}
                         {/* <StyledItem>
                             <Icon> settings </Icon>
                             <Span> Settings </Span>

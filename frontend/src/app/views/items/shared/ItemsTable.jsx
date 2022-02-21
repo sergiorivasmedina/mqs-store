@@ -93,6 +93,7 @@ const SimpleTable = ({ items, setItems }) => {
     const [state, setState] = useState(true)
     const [stateName, setStateName] = useState('Activo')
     const [itemPartNumber, setItemPartNumber] = useState('')
+    const [itemCode, setItemCode] = useState('');
     const [itemName, setItemName] = useState('')
     const [itemPrice, setItemPrice] = useState(0)
     const [currentItem, setCurrentItem] = useState(initialCurrentItem)
@@ -135,6 +136,7 @@ const SimpleTable = ({ items, setItems }) => {
     function handleClose() {
         setItemName('')
         setItemPartNumber('')
+        setItemCode('')
         setItemPrice(0)
         setCurrentItem(initialCurrentItem)
         setProductPictures([])
@@ -145,6 +147,7 @@ const SimpleTable = ({ items, setItems }) => {
 
     function editItem(item) {
         setItemPartNumber(item.partNumber)
+        setItemCode(item.code)
         setItemName(item.description)
         setItemPrice(item.price.toFixed(2))
         setState(item.status)
@@ -186,6 +189,7 @@ const SimpleTable = ({ items, setItems }) => {
 
         const form = new FormData();
         form.append("partNumber", itemPartNumber);
+        form.append("code", itemCode);
         form.append("description", itemName);
         form.append("price", itemPrice);
         form.append("idBrand", inputBrand._id);
@@ -230,6 +234,10 @@ const SimpleTable = ({ items, setItems }) => {
 
     function handlerInputItemPartNumber(event) {
         setItemPartNumber(event.target.value)
+    }
+
+    function handlerCode(event) {
+        setItemCode(event.target.value)
     }
 
     function handlerInputItemName(event) {
@@ -302,7 +310,8 @@ const SimpleTable = ({ items, setItems }) => {
             <StyledTable>
                 <TableHead>
                     <TableRow>
-                        <TableCell>Numero de Parte</TableCell>
+                        <TableCell>Número de Parte</TableCell>
+                        <TableCell>Código</TableCell>
                         <TableCell>Nombre</TableCell>
                         <TableCell>Precio</TableCell>
                         <TableCell>Marca</TableCell>
@@ -316,7 +325,9 @@ const SimpleTable = ({ items, setItems }) => {
                         <TableRow key={index}>
                             <TableCell align="left">
                                 {item.partNumber}
+                            
                             </TableCell>
+                            <TableCell>{item.code}</TableCell>
                             <TableCell>{item.description}</TableCell>
                             <TableCell>S/ {item.price.toFixed(2)}</TableCell>
                             <TableCell>{item.brand.description}</TableCell>
@@ -350,10 +361,18 @@ const SimpleTable = ({ items, setItems }) => {
                                 <DialogContent>
                                     <StyledTextField
                                         id="outlined-basic"
-                                        label="Numero de parte"
+                                        label="Número de parte"
                                         variant="outlined"
                                         value={itemPartNumber}
                                         onChange={handlerInputItemPartNumber}
+                                    />
+                                    <br></br>
+                                    <StyledTextField
+                                        id="outlined-basic"
+                                        label="Código"
+                                        variant="outlined"
+                                        value={itemCode}
+                                        onChange={handlerCode}
                                     />
                                     <br></br>
                                     <StyledTextField
@@ -371,6 +390,7 @@ const SimpleTable = ({ items, setItems }) => {
                                         value={itemPrice}
                                         onChange={handlerInputItemPrice}
                                     />
+                                    <br></br>
                                     <br></br>
                                     <Fragment>
                                         <Autocomplete

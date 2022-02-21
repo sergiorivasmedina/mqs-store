@@ -16,12 +16,12 @@ function addImagesLinks(files, photos) {
 
 app.post('/component-detail/', uploadS3.array("productPicture"), async (req, res) => {
     
-    const { partNumber, description, price, idComponent, idBrand, status } = req.body;
+    const { partNumber, code, description, price, idComponent, idBrand, status } = req.body;
 
     let photos = [];
     addImagesLinks(req.files, photos);
 
-    const componentDetail = new ComponentDetail({ partNumber, description, price, idComponent, idBrand, status, photos });
+    const componentDetail = new ComponentDetail({ partNumber, code, description, price, idComponent, idBrand, status, photos });
     await componentDetail.save();
     res.json(componentDetail);
 })

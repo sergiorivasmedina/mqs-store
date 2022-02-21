@@ -3,6 +3,7 @@ const components = require('../apiServices/components/routes');
 const components_details = require('../apiServices/componentDetails/routes');
 const roles = require('../apiServices/roles/routes');
 const users =  require('../apiServices/users/routes');
+const parameters = require('../apiServices/parameters/routes');
 
 const loginUser = require('../apiServices/auth/routes');
 
@@ -19,6 +20,7 @@ router.use(ENDPOINT_API, components);
 router.use(ENDPOINT_API, components_details);
 router.use(ENDPOINT_API, roles);
 router.use(ENDPOINT_API, users);
+router.use(ENDPOINT_API, parameters);
 
 router.use(ENDPOINT_AUTH, loginUser);
 

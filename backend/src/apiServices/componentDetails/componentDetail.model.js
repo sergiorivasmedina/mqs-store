@@ -3,6 +3,7 @@ const { Schema } = mongoose
 
 const ComponentDetailSchema = new Schema({
     partNumber: { type: String, require: true },
+    code: { type: String, require: true },
     description: { type: String, require: true },
     price: { type: Number, require: true },
     idComponent: {type: Schema.Types.ObjectId, require: true },

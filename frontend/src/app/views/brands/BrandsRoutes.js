@@ -5,7 +5,7 @@ const Brands = Loadable(lazy(() => import("./Brands")));
 
 const brandsRoutes = [
     {
-        path: '/brand',
+        path: '/brands',
         element: <Brands />,
     },
 ]

@@ -67,6 +67,7 @@ export default function CreateItemDialog({ items, setItems }) {
     const [stateName, setStateName] = useState('Activo')
     const [itemName, setItemName] = useState('')
     const [itemPartNumber, setItemPartNumber] = useState('')
+    const [itemCode, setItemCode] = useState('');
     const [itemPrice, setItemPrice] = useState(0.00)
     const [inputBrandValue, setInputBrandValue] = useState(null);
     const [inputComponentValue, setInputComponentValue] = useState(null);
@@ -81,6 +82,7 @@ export default function CreateItemDialog({ items, setItems }) {
     function handleClose() {
         setItemName('')
         setItemPartNumber('')
+        setItemCode('')
         setItemPrice(0.00)
         setBrandValue('');
         setComponentValue('');
@@ -104,6 +106,10 @@ export default function CreateItemDialog({ items, setItems }) {
         setItemPartNumber(event.target.value)
     }
 
+    function handleItemCode(event) {
+        setItemCode(event.target.value)
+    }
+
     function handleInputChange(event) {
         setItemName(event.target.value)
     }
@@ -116,6 +122,7 @@ export default function CreateItemDialog({ items, setItems }) {
         if (itemPartNumber.length > 0 && itemName.length > 0 && !isNaN(itemPrice) && inputBrandValue !== null && inputComponentValue !== null) {
             const form = new FormData();
             form.append("partNumber", itemPartNumber);
+            form.append("code", itemCode);
             form.append("description", itemName);
             form.append("price", itemPrice);
             form.append("idBrand", inputBrandValue._id);
@@ -130,6 +137,7 @@ export default function CreateItemDialog({ items, setItems }) {
                 const itemResponse = {
                     _id: res.data._id,
                     partNumber: res.data.partNumber,
+                    code: res.data.code,
                     description: res.data.description,
                     price: res.data.price,
                     brand: {
@@ -190,6 +198,14 @@ export default function CreateItemDialog({ items, setItems }) {
                         variant="outlined"
                         value={itemPartNumber}
                         onChange={handleInputPartNumberChange}
+                    />
+                    <br></br>
+                    <StyledTextField
+                        id="outlined-basic"
+                        label="Código"
+                        variant="outlined"
+                        value={itemCode}
+                        onChange={handleItemCode}
                     />
                     <br></br>
                     <StyledTextField

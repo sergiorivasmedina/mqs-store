@@ -16,30 +16,8 @@ const AppSnackbar = Loadable(lazy(() => import("./snackbar/AppSnackbar")));
 const AppAutoComplete = Loadable(lazy(() => import("./auto-complete/AppAutoComplete")));
 const AppExpansionPanel = Loadable(lazy(() => import("./expansion-panel/AppExpansionPanel")));
 
-// MQS
-const BrandsView = Loadable(lazy(() => import("../brands/Brands")));
-const ComponentsView = Loadable(lazy(() => import("../brand-components/Components")));
-const ItemsView = Loadable(lazy(() => import("../items/Items")));
-const UsersView = Loadable(lazy(() => import("../users/Users")))
-
 const materialRoutes = [
     {
-        path: '/brands',
-        element: <BrandsView />,
-    },
-    {
-        path: '/components',
-        element: <ComponentsView />,
-    },
-    {
-        path: '/items',
-        element: <ItemsView />,
-    },
-    {
-        path: '/users',
-        element: <UsersView />,
-    }
-    ,{
         path: '/material/table',
         element: <AppTable />,
     },

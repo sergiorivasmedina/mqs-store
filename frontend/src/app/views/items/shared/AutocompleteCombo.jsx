@@ -17,6 +17,8 @@ const AutocompleteCombo = ({ getPath, label, setInputFormValue, value }) => {
     useEffect(() => {
         if (value == null) {
             setInputValue({ description: '' });
+        } else {
+            setInputValue(value);
         }
     }, [value]);
 

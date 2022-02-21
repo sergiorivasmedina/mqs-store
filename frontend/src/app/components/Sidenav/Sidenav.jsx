@@ -1,9 +1,11 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import Scrollbar from 'react-perfect-scrollbar'
-import { navigations } from 'app/navigations'
 import { MatxVerticalNav } from 'app/components'
 import useSettings from 'app/hooks/useSettings'
 import { styled } from '@mui/system'
+import AuthService from '../../services/AuthService'
+import { useNavigate } from 'react-router-dom'
+import axios from '../../../axios'
 
 const StyledScrollBar = styled(Scrollbar)(() => ({
     paddingLeft: '1rem',
@@ -26,7 +28,20 @@ const SideNavMobile = styled('div')(({ theme }) => ({
 }))
 
 const Sidenav = ({ children }) => {
+    const redirect = useNavigate();
     const { settings, updateSettings } = useSettings()
+    const [navigations, setNavigations] = useState([]);
+
+    React.useEffect(async () => {
+        const user = await AuthService.getUser(localStorage.getItem('accessToken'));
+        
+        if (!user || !user.idRole) return redirect("/session/signin");
+
+        axios.get(`/api/v1/parameter/group/navigations/role/${user.idRole}`).then(res => {
+            setNavigations(res.data.value);
+        })
+    }, [])
+    
 
     const updateSidebarMode = (sidebarSettings) => {
         let activeLayoutSettingsName = settings.activeLayout + 'Settings'
