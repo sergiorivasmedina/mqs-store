@@ -18,7 +18,8 @@ app.get('/component-details/brand/:idBrand/component/:idComponent', async (req, 
             price: response.price,
             status: response.status,
             brand: brand,
-            component: component
+            component: component,
+            photos: response.photos
         }
     }))
     res.json(componentDetailResponse);

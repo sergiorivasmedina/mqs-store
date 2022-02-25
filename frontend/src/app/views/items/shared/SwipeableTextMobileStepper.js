@@ -76,7 +76,7 @@ function SwipeableTextMobileStepper({ endpoint, photos, description, price, bran
                         onClick={handleNext}
                         disabled={activeStep === maxSteps - 1}
                     >
-                        Next
+                        Siguiente
                         {theme.direction === 'rtl' ? (
                             <KeyboardArrowLeft />
                         ) : (
@@ -91,7 +91,7 @@ function SwipeableTextMobileStepper({ endpoint, photos, description, price, bran
                         ) : (
                             <KeyboardArrowLeft />
                         )}
-                        Back
+                        Anterior
                     </Button>
                 }
             />

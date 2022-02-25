@@ -80,7 +80,8 @@ const BransStatCards = () => {
                         <StyledCard elevation={6}>
                             <ContentBox>
                                 <IMG
-                                    src={`http://localhost:8080/api/v1/brand/${availableBrand._id}/image`}
+                                    src={`${axios.defaults.baseURL}/api/v1/brand/${availableBrand._id}/image`}
+                                    // src={`http://localhost:8080/api/v1/brand/${availableBrand._id}/image`}
                                     // src={`http://3.82.209.241:8080/api/v1/brand/${availableBrand._id}/image`}
                                     alt={availableBrand.description}
                                 />

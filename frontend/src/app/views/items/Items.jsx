@@ -3,9 +3,10 @@ import ItemsTable from './shared/ItemsTable'
 import { SimpleCard } from 'app/components'
 import { Box, styled, alpha } from '@mui/system'
 import CreateItemDialog from './shared/CreateItemDialog'
-import { InputBase, Icon, IconButton, Tooltip } from '@mui/material'
+import { InputBase, IconButton, Tooltip } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search';
 import SendIcon from '@mui/icons-material/Send';
+import ClearIcon from '@mui/icons-material/Clear';
 import axios from '../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
@@ -87,6 +88,10 @@ const Items = () => {
         setItemsFiltered(itemsAux);
     }
 
+    function handleClearFilters() {
+        setItemsFiltered(items);
+    }
+
     return (
         <Container>
             <CreateItemDialog items={itemsFiltered} setItems={setItemsFiltered} />
@@ -121,6 +126,11 @@ const Items = () => {
                     <Tooltip title="Filtrar y buscar" fontSize="large">
                         <IconButton size="large" aria-label="search" color="primary" onClick={handlerFilterItems}>
                             <SendIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Eliminar filtros" fontSize="large">
+                        <IconButton size="large" aria-label="search" color="primary" onClick={handleClearFilters}>
+                            <ClearIcon />
                         </IconButton>
                     </Tooltip>
                 </SearchContainer>

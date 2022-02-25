@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { Paragraph } from 'app/components/Typography'
 import { Box, styled } from '@mui/system'
 import {
+    Avatar,
+    AvatarGroup,
     Button,
     Card,
     FormControl,
-    Icon,
     IconButton,
     InputLabel,
     Table,
@@ -62,8 +63,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const TopSellingTable = () => {
 
-    const endpointImages = 'http://localhost:8080/api/v1/images/';
-    const endpointImagesNotAvailable = 'http://localhost:3000/assets/images/mqs/image_not_available.png';
+    const endpointImages = axios.defaults.baseURL + '/api/v1/images/';
+    const endpointImagesNotAvailable = `${axios.defaults.baseURL.slice(0, -4)}${window.location.port}/assets/images/mqs/image_not_available.png`;
+    // const endpointImages = 'http://localhost:8080/api/v1/images/';
+    // const endpointImagesNotAvailable = 'http://localhost:3000/assets/images/mqs/image_not_available.png';
     // const endpointImages = 'http://3.82.209.241:8080/api/v1/images/';
     // const endpointImagesNotAvailable = 'http://3.82.209.241:3000/assets/images/mqs/image_not_available.png';
     const [endpoint, setEndpoint] = useState(endpointImages);
@@ -232,7 +235,19 @@ const TopSellingTable = () => {
                                     sx={{ px: 0, textTransform: 'capitalize' }}
                                 >
                                     <IconButton onClick={() => handlePhoto(product)}>
-                                        <Icon color="primary">photo</Icon>
+                                        <AvatarGroup max={3}>
+                                            {product.photos && product.photos.length > 0
+                                                ? product.photos.map((photo, indexPhoto) => (
+                                                    <Avatar
+                                                        key={indexPhoto}
+                                                        src={endpointImages + photo.replace('/', '%2F')}
+                                                    />
+                                                ))
+                                                : <Avatar
+                                                    src={endpointImagesNotAvailable}
+                                                    sx={{ width: 24, height: 24 }}
+                                                />}
+                                        </AvatarGroup>
                                     </IconButton>
                                 </TableCell>
                                 <Dialog

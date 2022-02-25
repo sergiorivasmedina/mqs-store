@@ -104,8 +104,10 @@ const SimpleTable = ({ items, setItems }) => {
     const [deletedPicturesList, setDeletedPicturesList] = useState([]);
 
     // Image dialog
-    const endpointImages = 'http://localhost:8080/api/v1/images/';
-    const endpointImagesNotAvailable = 'http://localhost:3000/assets/images/mqs/image_not_available.png';
+    const endpointImages = axios.defaults.baseURL + '/api/v1/images/';
+    const endpointImagesNotAvailable = `${axios.defaults.baseURL.slice(0, -4)}${window.location.port}/assets/images/mqs/image_not_available.png`;
+    // const endpointImages = 'http://localhost:8080/api/v1/images/';
+    // const endpointImagesNotAvailable = 'http://localhost:3000/assets/images/mqs/image_not_available.png';
     // const endpointImages = 'http://3.82.209.241:8080/api/v1/images/';
     // const endpointImagesNotAvailable = 'http://3.82.209.241:3000/assets/images/mqs/image_not_available.png';
     const [endpoint, setEndpoint] = useState(endpointImages);

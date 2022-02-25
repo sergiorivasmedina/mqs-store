@@ -44,10 +44,11 @@ export default function CreateItemDialog({ users, setUsers, roleSuggestion, bran
     const [state, setState] = useState(1);
     const [inputUserRole, setInputUserRole] = useState(null);
     const [currentAvailableBrands, setcurrentAvailableBrands] = useState([]);
-    const [currentAvailableBrandsSuggestions, setCurrentAvailableBrandsSuggestions] = useState(brandsAvailable);
+    const [currentAvailableBrandsSuggestions, setCurrentAvailableBrandsSuggestions] = useState([]);
 
 
     function handleClickOpen() {
+        setCurrentAvailableBrandsSuggestions(brandsAvailable);
         setOpen(true)
     }
 

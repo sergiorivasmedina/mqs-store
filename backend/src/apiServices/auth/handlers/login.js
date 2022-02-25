@@ -27,6 +27,7 @@ app.post("/login", async (req, res) => {
                 id: user.id,
                 email: user.mail,
                 name: user.name,
+                lastName: user.lastName,
                 role: user.idRole,
                 availableBrands: user.availableBrands
             }
