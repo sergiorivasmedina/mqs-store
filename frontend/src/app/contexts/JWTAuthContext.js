@@ -1,4 +1,5 @@
 import React, { createContext, useEffect, useReducer } from 'react'
+import { useNavigate } from 'react-router-dom'
 import jwtDecode from 'jwt-decode'
 import axios from '../../axios'
 import { MatxLoading } from 'app/components'
@@ -83,6 +84,7 @@ const AuthContext = createContext({
 })
 
 export const AuthProvider = ({ children }) => {
+    const redirect = useNavigate();
     const [state, dispatch] = useReducer(reducer, initialState)
 
     const login = async (email, password) => {
@@ -157,6 +159,7 @@ export const AuthProvider = ({ children }) => {
                             user: null,
                         },
                     })
+                    redirect("/session/signin");
                 }
             } catch (err) {
                 console.error(err)
@@ -167,6 +170,7 @@ export const AuthProvider = ({ children }) => {
                         user: null,
                     },
                 })
+                redirect("/session/signin");
             }
         })()
     }, [])
