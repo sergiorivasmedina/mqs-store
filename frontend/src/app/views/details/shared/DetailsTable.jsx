@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Paragraph } from 'app/components/Typography'
+import { H2, Paragraph } from 'app/components/Typography'
 import { Box, styled } from '@mui/system'
 import {
     Avatar,
@@ -7,6 +7,7 @@ import {
     Button,
     Card,
     FormControl,
+    Icon,
     IconButton,
     InputLabel,
     Table,
@@ -16,12 +17,16 @@ import {
     TableBody,
     MenuItem,
     Select,
+    DialogTitle,
 } from '@mui/material'
 import SwipeableTextMobileStepper from './SwipeableTextMobileStepper'
 import Slide from '@mui/material/Slide'
 import Dialog from '@mui/material/Dialog'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { useDispatch } from 'react-redux'
+import { addProductToCart } from 'app/redux/actions/EcommerceActions'
 import axios from '../../../../axios'
 
 const CardHeader = styled('div')(() => ({
@@ -61,7 +66,17 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />
 })
 
+const StyledIconButton = styled(IconButton)(({ theme }) => ({
+    '& span': {
+        color: theme.palette.text.primary,
+    },
+    '& #disable': {
+        color: theme.palette.text.disabled,
+    },
+}))
+
 const TopSellingTable = () => {
+    const dispatch = useDispatch()
 
     const endpointImages = axios.defaults.baseURL + '/api/v1/images/';
     const endpointImagesNotAvailable = `${axios.defaults.baseURL.slice(0, -4)}${window.location.port}/assets/images/mqs/image_not_available.png`;
@@ -75,6 +90,11 @@ const TopSellingTable = () => {
     const [components, setComponents] = useState([]);
     const [selectedComponent, setSelectedComponent] = useState('');
     const [productList, setProductList] = useState([]);
+
+    const initialProductSelected = { id: '', imgUrl: '', price: '', title: '', amount: 0 };
+    const [openAddToCart, setOpenAddToCart] = useState(false);
+    const [productSelected, setProductSelected] = useState(initialProductSelected);
+    const [currentProductAmount, setCurrentProductAmount] = useState(1);
 
     const emptyProductImage = { photos: [], description: null, price: null, brand: { description: null }, component: { description: null } };
     const [productImageSelected, setProductImageSelected] = useState(emptyProductImage);
@@ -125,6 +145,30 @@ const TopSellingTable = () => {
         setOpen(false);
     }
 
+    function handleAddTocartOpenDialog(product) {
+        setProductSelected(product);
+        setOpenAddToCart(true);
+    }
+
+    function handleAddToCartClose() {
+        setOpenAddToCart(false);
+        setProductSelected(initialProductSelected);
+        setCurrentProductAmount(1);
+    }
+
+    function handleAddProductToCart() {
+        const product = {
+            id: productSelected._id,
+            imgUrl: productSelected.photos && productSelected.photos.length ? endpointImages + productSelected.photos[0].replace('/', '%2F') : endpointImagesNotAvailable,
+            price: productSelected.price,
+            title: productSelected.description,
+            amount: currentProductAmount
+        }
+        
+        dispatch(addProductToCart(product));
+        handleAddToCartClose();
+    }
+
     return (
         <Card elevation={3} sx={{ pt: '20px', mb: 3 }}>
 
@@ -159,7 +203,7 @@ const TopSellingTable = () => {
                 <ProductTable>
                     <TableHead>
                         <TableRow>
-                            <TableCell sx={{ px: 3 }} colSpan={2}>
+                            <TableCell sx={{ px: 3 }} colSpan={1}>
                                 Código
                             </TableCell>
                             <TableCell sx={{ px: 0 }} colSpan={2}>
@@ -171,11 +215,13 @@ const TopSellingTable = () => {
                             <TableCell sx={{ px: 0 }} colSpan={2}>
                                 Componente
                             </TableCell>
-                            <TableCell sx={{ px: 0 }} colSpan={2}>
+                            <TableCell sx={{ px: 0 }} colSpan={1}>
                                 Precio
                             </TableCell>
-                            <TableCell sx={{ px: 0 }} colSpan={2}>
+                            <TableCell sx={{ px: 0 }} colSpan={1}>
                                 Foto
+                            </TableCell>
+                            <TableCell sx={{ px: 0 }} colSpan={1}>
                             </TableCell>
                         </TableRow>
                     </TableHead>
@@ -184,7 +230,7 @@ const TopSellingTable = () => {
                             <TableRow key={index} hover>
                                 <TableCell
                                     align="left"
-                                    colSpan={2}
+                                    colSpan={1}
                                     sx={{ px: 0, textTransform: 'capitalize' }}
                                 >
                                     {product.code}
@@ -224,13 +270,13 @@ const TopSellingTable = () => {
                                 </TableCell>
                                 <TableCell
                                     align="left"
-                                    colSpan={2}
+                                    colSpan={1}
                                     sx={{ px: 0, textTransform: 'capitalize' }}
                                 >
                                     S/ {product.price.toFixed(2)}
                                 </TableCell>
                                 <TableCell
-                                    colSpan={2}
+                                    colSpan={1}
                                     align="left"
                                     sx={{ px: 0, textTransform: 'capitalize' }}
                                 >
@@ -250,6 +296,65 @@ const TopSellingTable = () => {
                                         </AvatarGroup>
                                     </IconButton>
                                 </TableCell>
+                                <TableCell
+                                    align="center"
+                                    colSpan={1}
+                                    sx={{ px: 0 }}
+                                >
+                                    <IconButton onClick={() => handleAddTocartOpenDialog(product)}>
+                                        <ShoppingCartIcon color="primary" />
+                                    </IconButton>
+                                </TableCell>
+                                <Dialog
+                                    open={openAddToCart}
+                                    TransitionComponent={Transition}
+                                    keepMounted
+                                    onClose={handleAddToCartClose}
+                                    aria-labelledby="alert-dialog-add-to-cart"
+                                    aria-describedby="alert-dialog-add-to-cart-description"
+                                >
+                                    <DialogTitle>
+                                        {`¿Cuántos ${productSelected.description} agregar al carrito de compras?`}
+                                    </DialogTitle>
+                                    <DialogContent>
+                                        <Box
+                                            mr="4px"
+                                            display="flex"
+                                        >
+                                            <StyledIconButton
+                                                disabled={!(currentProductAmount - 1)}
+                                                size="small"
+                                                onClick={() => {
+                                                    setCurrentProductAmount(currentProductAmount - 1)
+                                                }}
+                                            >
+                                                <Icon id={!(currentProductAmount - 1) && 'disable'}>
+                                                    remove
+                                                </Icon>
+                                            </StyledIconButton>
+                                            <H2>{currentProductAmount}</H2>
+                                            <StyledIconButton
+                                                size="small"
+                                                onClick={() => {
+                                                    setCurrentProductAmount(currentProductAmount + 1)
+                                                }}
+                                            >
+                                                <Icon sx={{ cursor: 'pinter' }}>
+                                                    add
+                                                </Icon>
+                                            </StyledIconButton>
+                                        </Box>
+                                    </DialogContent>
+                                    <DialogActions>
+                                        <Button onClick={handleAddToCartClose} color="secondary">
+                                            Cancelar
+                                        </Button>
+                                        <Button onClick={handleAddProductToCart} color="primary">
+                                            Agregar
+                                        </Button>
+                                    </DialogActions>
+                                </Dialog>
+
                                 <Dialog
                                     open={open}
                                     TransitionComponent={Transition}

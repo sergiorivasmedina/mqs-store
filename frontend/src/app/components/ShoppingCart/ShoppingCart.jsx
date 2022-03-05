@@ -1,10 +1,8 @@
-import { useEffect } from 'react'
-import useAuth from 'app/hooks/useAuth'
 import { H6, Small } from '../Typography'
 import { Box, styled, useTheme } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import useSettings from 'app/hooks/useSettings'
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { themeShadows } from '../MatxTheme/themeColors'
 import { sideNavWidth, topBarHeight } from 'app/utils/constant'
@@ -90,14 +88,14 @@ function ShoppingCart({ container }) {
     const [panelOpen, setPanelOpen] = useState(false)
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const { user } = useAuth()
     const { cartList } = useSelector((state) => state.ecommerce)
+    // const [cartList, setCartList] = useState([]);
     const { settings } = useSettings()
     const theme = useTheme()
     const secondary = theme.palette.text.secondary
 
     if (!cartListLoaded) {
-        dispatch(getCartList(user.id))
+        dispatch(getCartList())
         cartListLoaded = true
     }
 
@@ -112,6 +110,21 @@ function ShoppingCart({ container }) {
         }
     }
 
+    // function updateCartAmount(idProduct, amount) {
+    //     let newCartList = cartList.map(product => {
+    //         if (product.id === idProduct) {
+    //             product.amount = amount;
+    //         }
+    //         return product;
+    //     })
+    //     setCartList(newCartList);
+    // }
+
+    // function deleteProductFromCart(idProduct) {
+    //     let newCartList = cartList.filter(product => product.id !== idProduct);
+    //     setCartList(newCartList);
+    // }
+
     useEffect(() => {
         let total = 0
 
@@ -119,6 +132,7 @@ function ShoppingCart({ container }) {
             total += product.price * product.amount
         })
         setTotalCost(total)
+        // localStorage.setItem('cartList', JSON.stringify(cartList))
     }, [cartList])
 
     const { palette } = useTheme()
@@ -146,7 +160,7 @@ function ShoppingCart({ container }) {
                     <MiniCart>
                         <CartBox>
                             <Icon color="primary">shopping_cart</Icon>
-                            <h5>Cart</h5>
+                            <h5>Carrito de compras</h5>
                         </CartBox>
 
                         <Box flexGrow={1} overflow="auto">
@@ -159,35 +173,19 @@ function ShoppingCart({ container }) {
                                     >
                                         <StyledIconButton
                                             size="small"
-                                            onClick={() =>
-                                                dispatch(
-                                                    updateCartAmount(
-                                                        user.id,
-                                                        product.id,
-                                                        product.amount + 1
-                                                    )
-                                                )
-                                            }
+                                            onClick={() => dispatch(updateCartAmount(product.id, product.amount + 1))}
                                         >
                                             <Icon sx={{ cursor: 'pinter' }}>
-                                                keyboard_arrow_up
+                                                add
                                             </Icon>
                                         </StyledIconButton>
                                         <StyledIconButton
                                             disabled={!(product.amount - 1)}
                                             size="small"
-                                            onClick={() =>
-                                                dispatch(
-                                                    updateCartAmount(
-                                                        user.id,
-                                                        product.id,
-                                                        product.amount - 1
-                                                    )
-                                                )
-                                            }
+                                            onClick={() => dispatch(updateCartAmount(product.id, product.amount - 1))}
                                         >
                                             <Icon id={!(product.amount - 1) && 'disable'}>
-                                                keyboard_arrow_down
+                                                remove
                                             </Icon>
                                         </StyledIconButton>
                                     </Box>
@@ -200,19 +198,12 @@ function ShoppingCart({ container }) {
                                     <ProductDetails>
                                         <H6>{product.title}</H6>
                                         <Small sx={{ color: secondary }}>
-                                            ${product.price} x {product.amount}
+                                            S/ {product.price} x {product.amount}
                                         </Small>
                                     </ProductDetails>
                                     <StyledIconButton
                                         size="small"
-                                        onClick={() =>
-                                            dispatch(
-                                                deleteProductFromCart(
-                                                    user.userId,
-                                                    product.id
-                                                )
-                                            )
-                                        }
+                                        onClick={() => dispatch(deleteProductFromCart(product.id))}
                                     >
                                         <Icon fontSize="small">clear</Icon>
                                     </StyledIconButton>
@@ -226,7 +217,7 @@ function ShoppingCart({ container }) {
                             color="primary"
                             onClick={handleCheckoutClick}
                         >
-                            Checkout (${totalCost.toFixed(2)})
+                            Comprar (S/ {totalCost.toFixed(2)})
                         </Button>
                     </MiniCart>
                 </Drawer>

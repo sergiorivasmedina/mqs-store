@@ -47,44 +47,59 @@ export const getBrandList = () => (dispatch) => {
     })
 }
 
-export const getCartList = (uid) => (dispatch) => {
-    axios.get('/api/ecommerce/get-cart-list', { data: uid }).then((res) => {
-        dispatch({
-            type: GET_CART_LIST,
-            payload: res.data,
-        })
+export const getCartList = () => (dispatch) => {
+    const cartList = localStorage.getItem('cartList') ? JSON.parse(localStorage.getItem('cartList')) : [];
+    localStorage.setItem('cartList', JSON.stringify(cartList));
+    dispatch({
+        type: GET_CART_LIST,
+        payload: cartList
     })
 }
 
-export const addProductToCart = (uid, productId) => (dispatch) => {
-    axios.post('/api/ecommerce/add-to-cart', { uid, productId }).then((res) => {
-        console.log(res.data)
-        dispatch({
-            type: ADD_PRODUCT_TO_CART,
-            payload: res.data,
-        })
+export const addProductToCart = (product) => (dispatch) => {
+    const cartList = JSON.parse(localStorage.getItem('cartList'));
+    let existProduct = false;
+    cartList.map(productInCart => {
+        if (productInCart.id === product.id) {
+            productInCart.amount += product.amount
+            existProduct = true
+        }
     })
+    if (!existProduct) {
+        cartList.push(product)
+    }
+    
+    dispatch({
+        type: ADD_PRODUCT_TO_CART,
+        payload: cartList,
+    })
+    localStorage.setItem('cartList', JSON.stringify(cartList));
 }
 
-export const deleteProductFromCart = (uid, productId) => (dispatch) => {
-    axios
-        .post('/api/ecommerce/delete-from-cart', { uid, productId })
-        .then((res) => {
-            dispatch({
-                type: DELETE_PRODUCT_FROM_CART,
-                payload: res.data,
-            })
-        })
+export const deleteProductFromCart = (productId) => (dispatch) => {
+    const cartList = JSON.parse(localStorage.getItem('cartList'));
+    let newCartList = cartList.filter(product => product.id !== productId);
+
+    dispatch({
+        type: DELETE_PRODUCT_FROM_CART,
+        payload: newCartList
+    })
+    localStorage.setItem('cartList', JSON.stringify(newCartList));
 }
 
-export const updateCartAmount = (uid, productId, amount) => (dispatch) => {
-    console.log(uid, productId, amount)
-    axios
-        .post('/api/ecommerce/update-cart-amount', { uid, productId, amount })
-        .then((res) => {
-            dispatch({
-                type: UPDATE_CART_AMOUNT,
-                payload: res.data,
-            })
-        })
+export const updateCartAmount = (productId, amount) => (dispatch) => {
+    const cartList = JSON.parse(localStorage.getItem('cartList'));
+    let newCartList = cartList.map(product => {
+        if (product.id === productId) {
+            product.amount = amount;
+        }
+        return product;
+    })
+
+    dispatch({
+        type: UPDATE_CART_AMOUNT,
+        payload: newCartList
+    })
+
+    localStorage.setItem('cartList', JSON.stringify(newCartList));
 }

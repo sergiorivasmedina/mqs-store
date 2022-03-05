@@ -174,7 +174,7 @@ const Layout1Topbar = () => {
                         <NotificationBar />
                     </NotificationProvider> */}
 
-                    {/* <ShoppingCart /> */}
+                    <ShoppingCart />
 
                     <MatxMenu
                         menuButton={
@@ -184,10 +184,6 @@ const Layout1Topbar = () => {
                                         Hola <strong>{user.name}</strong>
                                     </Span>
                                 </Hidden>
-                                {/* <Avatar
-                                    src={user.avatar}
-                                    sx={{ cursor: 'pointer' }}
-                                /> */}
                                 {user.lastName
                                     ? <Avatar {...stringAvatar(user.name.split(' ')[0] + ' ' + user.lastName.split(' ')[0])} />
                                     : <Avatar {...stringAvatar(user.name)} />}
