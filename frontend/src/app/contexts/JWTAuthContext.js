@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import jwtDecode from 'jwt-decode'
 import axios from '../../axios'
 import { MatxLoading } from 'app/components'
+import { getCartList } from 'app/redux/actions/EcommerceActions'
 
 const initialState = {
     isAuthenticated: false,
@@ -28,6 +29,7 @@ const setSession = (accessToken, user) => {
     } else {
         localStorage.removeItem('accessToken')
         localStorage.removeItem('user')
+        localStorage.removeItem('cartList')
         delete axios.defaults.headers.common.Authorization
     }
 }
@@ -129,6 +131,7 @@ export const AuthProvider = ({ children }) => {
     const logout = () => {
         setSession(null, null)
         dispatch({ type: 'LOGOUT' })
+        dispatch(getCartList())
     }
 
     useEffect(() => {

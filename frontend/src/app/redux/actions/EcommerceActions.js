@@ -57,7 +57,8 @@ export const getCartList = () => (dispatch) => {
 }
 
 export const addProductToCart = (product) => (dispatch) => {
-    const cartList = JSON.parse(localStorage.getItem('cartList'));
+    let cartList = JSON.parse(localStorage.getItem('cartList'));
+    cartList = cartList ? cartList : [];
     let existProduct = false;
     cartList.map(productInCart => {
         if (productInCart.id === product.id) {

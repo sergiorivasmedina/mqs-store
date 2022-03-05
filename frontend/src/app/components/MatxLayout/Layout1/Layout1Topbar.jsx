@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import useAuth from 'app/hooks/useAuth'
 import useSettings from 'app/hooks/useSettings'
@@ -19,6 +19,7 @@ import {
     Hidden,
 } from '@mui/material'
 import { topBarHeight } from 'app/utils/constant'
+import axios from '../../../../axios'
 
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
     color: theme.palette.text.primary,
@@ -90,6 +91,20 @@ const Layout1Topbar = () => {
     const { settings, updateSettings } = useSettings()
     const { logout, user } = useAuth()
     const isMdScreen = useMediaQuery(theme.breakpoints.down('md'))
+
+    const [isCartRole, setIsCartRole] = useState(false);
+
+    useEffect(() => {
+        // Get idRole for show or not Cart icon
+        const idRole = JSON.parse(localStorage.getItem('user')).role;
+        axios.get('/api/v1/role/description/DISTRIBUIDOR').then(res => {
+            if (res.data._id === idRole) {
+                setIsCartRole(true);
+            }
+        }).catch(error => {
+            console.error(`Error for getting isCartRole role - ${error}`);
+        })
+    }, []);
 
     const updateSidebarMode = (sidebarSettings) => {
         updateSettings({
@@ -174,7 +189,7 @@ const Layout1Topbar = () => {
                         <NotificationBar />
                     </NotificationProvider> */}
 
-                    <ShoppingCart />
+                    {isCartRole ? <ShoppingCart /> : null}
 
                     <MatxMenu
                         menuButton={

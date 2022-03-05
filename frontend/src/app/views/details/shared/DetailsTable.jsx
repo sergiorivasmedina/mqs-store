@@ -99,7 +99,19 @@ const TopSellingTable = () => {
     const emptyProductImage = { photos: [], description: null, price: null, brand: { description: null }, component: { description: null } };
     const [productImageSelected, setProductImageSelected] = useState(emptyProductImage);
 
+    const [isCartRole, setIsCartRole] = useState(false);
+
     useEffect(() => {
+        // Get idRole for show or not Cart icon
+        const idRole = JSON.parse(localStorage.getItem('user')).role;
+        axios.get('/api/v1/role/description/DISTRIBUIDOR').then(res => {
+            if (res.data._id === idRole) {
+                setIsCartRole(true);
+            }
+        }).catch(error => {
+            console.error(`Error for getting isCartRole role - ${error}`);
+        })
+
         // Get all components from backend
         axios.get('/api/v1/components').then(res => {
             setComponents(res.data);
@@ -164,7 +176,7 @@ const TopSellingTable = () => {
             title: productSelected.description,
             amount: currentProductAmount
         }
-        
+
         dispatch(addProductToCart(product));
         handleAddToCartClose();
     }
@@ -221,8 +233,10 @@ const TopSellingTable = () => {
                             <TableCell sx={{ px: 0 }} colSpan={1}>
                                 Foto
                             </TableCell>
-                            <TableCell sx={{ px: 0 }} colSpan={1}>
-                            </TableCell>
+                            {isCartRole
+                                ? <TableCell sx={{ px: 0 }} colSpan={1}>
+                                </TableCell>
+                                : null}
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -296,15 +310,18 @@ const TopSellingTable = () => {
                                         </AvatarGroup>
                                     </IconButton>
                                 </TableCell>
-                                <TableCell
-                                    align="center"
-                                    colSpan={1}
-                                    sx={{ px: 0 }}
-                                >
-                                    <IconButton onClick={() => handleAddTocartOpenDialog(product)}>
-                                        <ShoppingCartIcon color="primary" />
-                                    </IconButton>
-                                </TableCell>
+                                {isCartRole
+                                    ? <TableCell
+                                        align="center"
+                                        colSpan={1}
+                                        sx={{ px: 0 }}
+                                    >
+                                        <IconButton onClick={() => handleAddTocartOpenDialog(product)}>
+                                            <ShoppingCartIcon color="primary" />
+                                        </IconButton>
+                                    </TableCell>
+                                    : null}
+
                                 <Dialog
                                     open={openAddToCart}
                                     TransitionComponent={Transition}
