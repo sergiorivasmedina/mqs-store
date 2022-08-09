@@ -314,13 +314,13 @@ const SimpleTable = ({ items, setItems }) => {
             <StyledTable>
                 <TableHead>
                     <TableRow>
-                        <TableCell>Número de Parte</TableCell>
-                        <TableCell>Código</TableCell>
-                        <TableCell>Nombre</TableCell>
-                        <TableCell>Precio</TableCell>
-                        <TableCell>Marca</TableCell>
-                        <TableCell>Componente</TableCell>
-                        <TableCell>Estado</TableCell>
+                        <TableCell colSpan={1}>Número de Parte</TableCell>
+                        <TableCell colSpan={1}>Código</TableCell>
+                        <TableCell colSpan={2}>Nombre</TableCell>
+                        <TableCell colSpan={1}>Precio</TableCell>
+                        <TableCell colSpan={1}>Marca</TableCell>
+                        <TableCell colSpan={1}>Componente</TableCell>
+                        <TableCell colSpan={1}>Estado</TableCell>
                         <TableCell>Acción</TableCell>
                     </TableRow>
                 </TableHead>
@@ -332,7 +332,7 @@ const SimpleTable = ({ items, setItems }) => {
                             
                             </TableCell>
                             <TableCell>{item.code}</TableCell>
-                            <TableCell>{item.description}</TableCell>
+                            <TableCell colSpan={2}>{item.description}</TableCell>
                             <TableCell>S/ {item.price.toFixed(2)}</TableCell>
                             <TableCell>{item.brand.description}</TableCell>
                             <TableCell>{item.component.description}</TableCell>

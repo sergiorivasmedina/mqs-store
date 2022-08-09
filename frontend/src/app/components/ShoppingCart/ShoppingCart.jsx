@@ -89,7 +89,6 @@ function ShoppingCart({ container }) {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const { cartList } = useSelector((state) => state.ecommerce)
-    // const [cartList, setCartList] = useState([]);
     const { settings } = useSettings()
     const theme = useTheme()
     const secondary = theme.palette.text.secondary
@@ -110,21 +109,6 @@ function ShoppingCart({ container }) {
         }
     }
 
-    // function updateCartAmount(idProduct, amount) {
-    //     let newCartList = cartList.map(product => {
-    //         if (product.id === idProduct) {
-    //             product.amount = amount;
-    //         }
-    //         return product;
-    //     })
-    //     setCartList(newCartList);
-    // }
-
-    // function deleteProductFromCart(idProduct) {
-    //     let newCartList = cartList.filter(product => product.id !== idProduct);
-    //     setCartList(newCartList);
-    // }
-
     useEffect(() => {
         let total = 0
 
@@ -132,7 +116,6 @@ function ShoppingCart({ container }) {
             total += product.price * product.amount
         })
         setTotalCost(total)
-        // localStorage.setItem('cartList', JSON.stringify(cartList))
     }, [cartList])
 
     const { palette } = useTheme()
@@ -217,7 +200,7 @@ function ShoppingCart({ container }) {
                             color="primary"
                             onClick={handleCheckoutClick}
                         >
-                            Comprar (S/ {totalCost.toFixed(2)})
+                            Realizar solicitud de pedido (S/ {totalCost.toFixed(2)})
                         </Button>
                     </MiniCart>
                 </Drawer>

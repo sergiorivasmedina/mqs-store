@@ -174,7 +174,10 @@ const TopSellingTable = () => {
             imgUrl: productSelected.photos && productSelected.photos.length ? endpointImages + productSelected.photos[0].replace('/', '%2F') : endpointImagesNotAvailable,
             price: productSelected.price,
             title: productSelected.description,
-            amount: currentProductAmount
+            amount: currentProductAmount,
+            code: productSelected.code,
+            brandName: productSelected.brand.description,
+            componentName: productSelected.component.description 
         }
 
         dispatch(addProductToCart(product));
@@ -218,10 +221,10 @@ const TopSellingTable = () => {
                             <TableCell sx={{ px: 3 }} colSpan={1}>
                                 Código
                             </TableCell>
-                            <TableCell sx={{ px: 0 }} colSpan={2}>
+                            <TableCell sx={{ px: 0 }} colSpan={3}>
                                 Descripción
                             </TableCell>
-                            <TableCell sx={{ px: 0 }} colSpan={2}>
+                            <TableCell sx={{ px: 0 }} colSpan={1}>
                                 Marca
                             </TableCell>
                             <TableCell sx={{ px: 0 }} colSpan={2}>
@@ -250,7 +253,7 @@ const TopSellingTable = () => {
                                     {product.code}
                                 </TableCell>
                                 <TableCell
-                                    colSpan={2}
+                                    colSpan={3}
                                     align="left"
                                     sx={{ px: 0, textTransform: 'capitalize' }}
                                 >
@@ -261,7 +264,7 @@ const TopSellingTable = () => {
                                     </Box>
                                 </TableCell>
                                 <TableCell
-                                    colSpan={2}
+                                    colSpan={1}
                                     align="left"
                                     sx={{ px: 0, textTransform: 'capitalize' }}
                                 >

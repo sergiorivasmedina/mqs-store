@@ -56,6 +56,7 @@ function SwipeableTextMobileStepper({ endpoint, photos, description, price, bran
                                 sx={{
                                     maxHeight: 300,
                                     display: 'block',
+                                    margin: '0 auto',
                                     maxWidth: 800,
                                     overflow: 'hidden'
                                 }}
